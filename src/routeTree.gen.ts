@@ -9,8 +9,86 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WalletRouteImport } from './routes/wallet'
+import { Route as SupportRouteImport } from './routes/support'
+import { Route as SlotsRouteImport } from './routes/slots'
+import { Route as ReferralRouteImport } from './routes/referral'
+import { Route as PromotionsRouteImport } from './routes/promotions'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as LotteryRouteImport } from './routes/lottery'
+import { Route as CricketRouteImport } from './routes/cricket'
+import { Route as CasinoRouteImport } from './routes/casino'
+import { Route as BetHistoryRouteImport } from './routes/bet-history'
+import { Route as AviatorRouteImport } from './routes/aviator'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WalletRoute = WalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SlotsRoute = SlotsRouteImport.update({
+  id: '/slots',
+  path: '/slots',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReferralRoute = ReferralRouteImport.update({
+  id: '/referral',
+  path: '/referral',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromotionsRoute = PromotionsRouteImport.update({
+  id: '/promotions',
+  path: '/promotions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LotteryRoute = LotteryRouteImport.update({
+  id: '/lottery',
+  path: '/lottery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CricketRoute = CricketRouteImport.update({
+  id: '/cricket',
+  path: '/cricket',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CasinoRoute = CasinoRouteImport.update({
+  id: '/casino',
+  path: '/casino',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BetHistoryRoute = BetHistoryRouteImport.update({
+  id: '/bet-history',
+  path: '/bet-history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AviatorRoute = AviatorRouteImport.update({
+  id: '/aviator',
+  path: '/aviator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +97,214 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/aviator': typeof AviatorRoute
+  '/bet-history': typeof BetHistoryRoute
+  '/casino': typeof CasinoRoute
+  '/cricket': typeof CricketRoute
+  '/lottery': typeof LotteryRoute
+  '/notifications': typeof NotificationsRoute
+  '/profile': typeof ProfileRoute
+  '/promotions': typeof PromotionsRoute
+  '/referral': typeof ReferralRoute
+  '/slots': typeof SlotsRoute
+  '/support': typeof SupportRoute
+  '/wallet': typeof WalletRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/aviator': typeof AviatorRoute
+  '/bet-history': typeof BetHistoryRoute
+  '/casino': typeof CasinoRoute
+  '/cricket': typeof CricketRoute
+  '/lottery': typeof LotteryRoute
+  '/notifications': typeof NotificationsRoute
+  '/profile': typeof ProfileRoute
+  '/promotions': typeof PromotionsRoute
+  '/referral': typeof ReferralRoute
+  '/slots': typeof SlotsRoute
+  '/support': typeof SupportRoute
+  '/wallet': typeof WalletRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/aviator': typeof AviatorRoute
+  '/bet-history': typeof BetHistoryRoute
+  '/casino': typeof CasinoRoute
+  '/cricket': typeof CricketRoute
+  '/lottery': typeof LotteryRoute
+  '/notifications': typeof NotificationsRoute
+  '/profile': typeof ProfileRoute
+  '/promotions': typeof PromotionsRoute
+  '/referral': typeof ReferralRoute
+  '/slots': typeof SlotsRoute
+  '/support': typeof SupportRoute
+  '/wallet': typeof WalletRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/aviator'
+    | '/bet-history'
+    | '/casino'
+    | '/cricket'
+    | '/lottery'
+    | '/notifications'
+    | '/profile'
+    | '/promotions'
+    | '/referral'
+    | '/slots'
+    | '/support'
+    | '/wallet'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/aviator'
+    | '/bet-history'
+    | '/casino'
+    | '/cricket'
+    | '/lottery'
+    | '/notifications'
+    | '/profile'
+    | '/promotions'
+    | '/referral'
+    | '/slots'
+    | '/support'
+    | '/wallet'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/aviator'
+    | '/bet-history'
+    | '/casino'
+    | '/cricket'
+    | '/lottery'
+    | '/notifications'
+    | '/profile'
+    | '/promotions'
+    | '/referral'
+    | '/slots'
+    | '/support'
+    | '/wallet'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
+  AviatorRoute: typeof AviatorRoute
+  BetHistoryRoute: typeof BetHistoryRoute
+  CasinoRoute: typeof CasinoRoute
+  CricketRoute: typeof CricketRoute
+  LotteryRoute: typeof LotteryRoute
+  NotificationsRoute: typeof NotificationsRoute
+  ProfileRoute: typeof ProfileRoute
+  PromotionsRoute: typeof PromotionsRoute
+  ReferralRoute: typeof ReferralRoute
+  SlotsRoute: typeof SlotsRoute
+  SupportRoute: typeof SupportRoute
+  WalletRoute: typeof WalletRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wallet': {
+      id: '/wallet'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof WalletRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/slots': {
+      id: '/slots'
+      path: '/slots'
+      fullPath: '/slots'
+      preLoaderRoute: typeof SlotsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/referral': {
+      id: '/referral'
+      path: '/referral'
+      fullPath: '/referral'
+      preLoaderRoute: typeof ReferralRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/promotions': {
+      id: '/promotions'
+      path: '/promotions'
+      fullPath: '/promotions'
+      preLoaderRoute: typeof PromotionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lottery': {
+      id: '/lottery'
+      path: '/lottery'
+      fullPath: '/lottery'
+      preLoaderRoute: typeof LotteryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cricket': {
+      id: '/cricket'
+      path: '/cricket'
+      fullPath: '/cricket'
+      preLoaderRoute: typeof CricketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/casino': {
+      id: '/casino'
+      path: '/casino'
+      fullPath: '/casino'
+      preLoaderRoute: typeof CasinoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bet-history': {
+      id: '/bet-history'
+      path: '/bet-history'
+      fullPath: '/bet-history'
+      preLoaderRoute: typeof BetHistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aviator': {
+      id: '/aviator'
+      path: '/aviator'
+      fullPath: '/aviator'
+      preLoaderRoute: typeof AviatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,17 +317,20 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
+  AviatorRoute: AviatorRoute,
+  BetHistoryRoute: BetHistoryRoute,
+  CasinoRoute: CasinoRoute,
+  CricketRoute: CricketRoute,
+  LotteryRoute: LotteryRoute,
+  NotificationsRoute: NotificationsRoute,
+  ProfileRoute: ProfileRoute,
+  PromotionsRoute: PromotionsRoute,
+  ReferralRoute: ReferralRoute,
+  SlotsRoute: SlotsRoute,
+  SupportRoute: SupportRoute,
+  WalletRoute: WalletRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
