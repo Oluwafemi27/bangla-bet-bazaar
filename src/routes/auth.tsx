@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
@@ -20,9 +20,9 @@ function AuthPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  if (user) {
-    setTimeout(() => navigate({ to: "/" }), 0);
-  }
+  useEffect(() => {
+    if (user) navigate({ to: "/" });
+  }, [user, navigate]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
