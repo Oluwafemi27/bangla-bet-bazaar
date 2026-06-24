@@ -39,7 +39,7 @@ function createSupabaseClient() {
       ...(!SUPABASE_PUBLISHABLE_KEY ? ['SUPABASE_PUBLISHABLE_KEY'] : []),
     ];
     const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Check your environment variables.`;
-    console.error(`[Supabase] ${message}`);
+    console.warn(`[Supabase] ${message}`);
     throw new Error(message);
   }
 
@@ -65,4 +65,3 @@ export const supabase = new Proxy({} as ReturnType<typeof createSupabaseClient>,
     return Reflect.get(_supabase, prop, receiver);
   },
 });
-

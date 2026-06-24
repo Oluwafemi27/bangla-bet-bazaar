@@ -13,6 +13,7 @@ export function BannerSlideshow() {
         .order("sort_order", { ascending: true });
       return data ?? [];
     },
+    staleTime: 0,
   });
 
   const [idx, setIdx] = useState(0);
