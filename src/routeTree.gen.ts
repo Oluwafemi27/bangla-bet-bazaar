@@ -17,7 +17,6 @@ import { Route as PromotionsRouteImport } from './routes/promotions'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as LotteryRouteImport } from './routes/lottery'
-import { Route as CricketRouteImport } from './routes/cricket'
 import { Route as CasinoRouteImport } from './routes/casino'
 import { Route as BetHistoryRouteImport } from './routes/bet-history'
 import { Route as AviatorRouteImport } from './routes/aviator'
@@ -64,11 +63,6 @@ const LotteryRoute = LotteryRouteImport.update({
   path: '/lottery',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CricketRoute = CricketRouteImport.update({
-  id: '/cricket',
-  path: '/cricket',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CasinoRoute = CasinoRouteImport.update({
   id: '/casino',
   path: '/casino',
@@ -101,7 +95,6 @@ export interface FileRoutesByFullPath {
   '/aviator': typeof AviatorRoute
   '/bet-history': typeof BetHistoryRoute
   '/casino': typeof CasinoRoute
-  '/cricket': typeof CricketRoute
   '/lottery': typeof LotteryRoute
   '/notifications': typeof NotificationsRoute
   '/profile': typeof ProfileRoute
@@ -117,7 +110,6 @@ export interface FileRoutesByTo {
   '/aviator': typeof AviatorRoute
   '/bet-history': typeof BetHistoryRoute
   '/casino': typeof CasinoRoute
-  '/cricket': typeof CricketRoute
   '/lottery': typeof LotteryRoute
   '/notifications': typeof NotificationsRoute
   '/profile': typeof ProfileRoute
@@ -134,7 +126,6 @@ export interface FileRoutesById {
   '/aviator': typeof AviatorRoute
   '/bet-history': typeof BetHistoryRoute
   '/casino': typeof CasinoRoute
-  '/cricket': typeof CricketRoute
   '/lottery': typeof LotteryRoute
   '/notifications': typeof NotificationsRoute
   '/profile': typeof ProfileRoute
@@ -152,7 +143,6 @@ export interface FileRouteTypes {
     | '/aviator'
     | '/bet-history'
     | '/casino'
-    | '/cricket'
     | '/lottery'
     | '/notifications'
     | '/profile'
@@ -168,7 +158,6 @@ export interface FileRouteTypes {
     | '/aviator'
     | '/bet-history'
     | '/casino'
-    | '/cricket'
     | '/lottery'
     | '/notifications'
     | '/profile'
@@ -184,7 +173,6 @@ export interface FileRouteTypes {
     | '/aviator'
     | '/bet-history'
     | '/casino'
-    | '/cricket'
     | '/lottery'
     | '/notifications'
     | '/profile'
@@ -201,7 +189,6 @@ export interface RootRouteChildren {
   AviatorRoute: typeof AviatorRoute
   BetHistoryRoute: typeof BetHistoryRoute
   CasinoRoute: typeof CasinoRoute
-  CricketRoute: typeof CricketRoute
   LotteryRoute: typeof LotteryRoute
   NotificationsRoute: typeof NotificationsRoute
   ProfileRoute: typeof ProfileRoute
@@ -270,13 +257,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LotteryRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/cricket': {
-      id: '/cricket'
-      path: '/cricket'
-      fullPath: '/cricket'
-      preLoaderRoute: typeof CricketRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/casino': {
       id: '/casino'
       path: '/casino'
@@ -321,7 +301,6 @@ const rootRouteChildren: RootRouteChildren = {
   AviatorRoute: AviatorRoute,
   BetHistoryRoute: BetHistoryRoute,
   CasinoRoute: CasinoRoute,
-  CricketRoute: CricketRoute,
   LotteryRoute: LotteryRoute,
   NotificationsRoute: NotificationsRoute,
   ProfileRoute: ProfileRoute,
