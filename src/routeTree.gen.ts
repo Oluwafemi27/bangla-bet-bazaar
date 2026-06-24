@@ -23,6 +23,13 @@ import { Route as BetHistoryRouteImport } from './routes/bet-history'
 import { Route as AviatorRouteImport } from './routes/aviator'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminUsersRouteImport } from './routes/admin.users'
+import { Route as AdminUpdatesRouteImport } from './routes/admin.updates'
+import { Route as AdminTransactionsRouteImport } from './routes/admin.transactions'
+import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
+import { Route as AdminBroadcastRouteImport } from './routes/admin.broadcast'
+import { Route as AdminBannersRouteImport } from './routes/admin.banners'
 
 const WalletRoute = WalletRouteImport.update({
   id: '/wallet',
@@ -94,6 +101,41 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminUpdatesRoute = AdminUpdatesRouteImport.update({
+  id: '/admin/updates',
+  path: '/admin/updates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminTransactionsRoute = AdminTransactionsRouteImport.update({
+  id: '/admin/transactions',
+  path: '/admin/transactions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminMessagesRoute = AdminMessagesRouteImport.update({
+  id: '/admin/messages',
+  path: '/admin/messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBroadcastRoute = AdminBroadcastRouteImport.update({
+  id: '/admin/broadcast',
+  path: '/admin/broadcast',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBannersRoute = AdminBannersRouteImport.update({
+  id: '/admin/banners',
+  path: '/admin/banners',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -110,6 +152,13 @@ export interface FileRoutesByFullPath {
   '/support': typeof SupportRoute
   '/updates': typeof UpdatesRoute
   '/wallet': typeof WalletRoute
+  '/admin/banners': typeof AdminBannersRoute
+  '/admin/broadcast': typeof AdminBroadcastRoute
+  '/admin/messages': typeof AdminMessagesRoute
+  '/admin/transactions': typeof AdminTransactionsRoute
+  '/admin/updates': typeof AdminUpdatesRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -126,6 +175,13 @@ export interface FileRoutesByTo {
   '/support': typeof SupportRoute
   '/updates': typeof UpdatesRoute
   '/wallet': typeof WalletRoute
+  '/admin/banners': typeof AdminBannersRoute
+  '/admin/broadcast': typeof AdminBroadcastRoute
+  '/admin/messages': typeof AdminMessagesRoute
+  '/admin/transactions': typeof AdminTransactionsRoute
+  '/admin/updates': typeof AdminUpdatesRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -143,6 +199,13 @@ export interface FileRoutesById {
   '/support': typeof SupportRoute
   '/updates': typeof UpdatesRoute
   '/wallet': typeof WalletRoute
+  '/admin/banners': typeof AdminBannersRoute
+  '/admin/broadcast': typeof AdminBroadcastRoute
+  '/admin/messages': typeof AdminMessagesRoute
+  '/admin/transactions': typeof AdminTransactionsRoute
+  '/admin/updates': typeof AdminUpdatesRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -161,6 +224,13 @@ export interface FileRouteTypes {
     | '/support'
     | '/updates'
     | '/wallet'
+    | '/admin/banners'
+    | '/admin/broadcast'
+    | '/admin/messages'
+    | '/admin/transactions'
+    | '/admin/updates'
+    | '/admin/users'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -177,6 +247,13 @@ export interface FileRouteTypes {
     | '/support'
     | '/updates'
     | '/wallet'
+    | '/admin/banners'
+    | '/admin/broadcast'
+    | '/admin/messages'
+    | '/admin/transactions'
+    | '/admin/updates'
+    | '/admin/users'
+    | '/admin'
   id:
     | '__root__'
     | '/'
@@ -193,6 +270,13 @@ export interface FileRouteTypes {
     | '/support'
     | '/updates'
     | '/wallet'
+    | '/admin/banners'
+    | '/admin/broadcast'
+    | '/admin/messages'
+    | '/admin/transactions'
+    | '/admin/updates'
+    | '/admin/users'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -210,6 +294,13 @@ export interface RootRouteChildren {
   SupportRoute: typeof SupportRoute
   UpdatesRoute: typeof UpdatesRoute
   WalletRoute: typeof WalletRoute
+  AdminBannersRoute: typeof AdminBannersRoute
+  AdminBroadcastRoute: typeof AdminBroadcastRoute
+  AdminMessagesRoute: typeof AdminMessagesRoute
+  AdminTransactionsRoute: typeof AdminTransactionsRoute
+  AdminUpdatesRoute: typeof AdminUpdatesRoute
+  AdminUsersRoute: typeof AdminUsersRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -312,6 +403,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/updates': {
+      id: '/admin/updates'
+      path: '/admin/updates'
+      fullPath: '/admin/updates'
+      preLoaderRoute: typeof AdminUpdatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/transactions': {
+      id: '/admin/transactions'
+      path: '/admin/transactions'
+      fullPath: '/admin/transactions'
+      preLoaderRoute: typeof AdminTransactionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/messages': {
+      id: '/admin/messages'
+      path: '/admin/messages'
+      fullPath: '/admin/messages'
+      preLoaderRoute: typeof AdminMessagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/broadcast': {
+      id: '/admin/broadcast'
+      path: '/admin/broadcast'
+      fullPath: '/admin/broadcast'
+      preLoaderRoute: typeof AdminBroadcastRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/banners': {
+      id: '/admin/banners'
+      path: '/admin/banners'
+      fullPath: '/admin/banners'
+      preLoaderRoute: typeof AdminBannersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -330,6 +470,13 @@ const rootRouteChildren: RootRouteChildren = {
   SupportRoute: SupportRoute,
   UpdatesRoute: UpdatesRoute,
   WalletRoute: WalletRoute,
+  AdminBannersRoute: AdminBannersRoute,
+  AdminBroadcastRoute: AdminBroadcastRoute,
+  AdminMessagesRoute: AdminMessagesRoute,
+  AdminTransactionsRoute: AdminTransactionsRoute,
+  AdminUpdatesRoute: AdminUpdatesRoute,
+  AdminUsersRoute: AdminUsersRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
