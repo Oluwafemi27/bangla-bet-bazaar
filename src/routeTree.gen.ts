@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WalletRouteImport } from './routes/wallet'
+import { Route as UpdatesRouteImport } from './routes/updates'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as SlotsRouteImport } from './routes/slots'
 import { Route as ReferralRouteImport } from './routes/referral'
@@ -26,6 +27,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const WalletRoute = WalletRouteImport.update({
   id: '/wallet',
   path: '/wallet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UpdatesRoute = UpdatesRouteImport.update({
+  id: '/updates',
+  path: '/updates',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SupportRoute = SupportRouteImport.update({
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/referral': typeof ReferralRoute
   '/slots': typeof SlotsRoute
   '/support': typeof SupportRoute
+  '/updates': typeof UpdatesRoute
   '/wallet': typeof WalletRoute
 }
 export interface FileRoutesByTo {
@@ -117,6 +124,7 @@ export interface FileRoutesByTo {
   '/referral': typeof ReferralRoute
   '/slots': typeof SlotsRoute
   '/support': typeof SupportRoute
+  '/updates': typeof UpdatesRoute
   '/wallet': typeof WalletRoute
 }
 export interface FileRoutesById {
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/referral': typeof ReferralRoute
   '/slots': typeof SlotsRoute
   '/support': typeof SupportRoute
+  '/updates': typeof UpdatesRoute
   '/wallet': typeof WalletRoute
 }
 export interface FileRouteTypes {
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/referral'
     | '/slots'
     | '/support'
+    | '/updates'
     | '/wallet'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -165,6 +175,7 @@ export interface FileRouteTypes {
     | '/referral'
     | '/slots'
     | '/support'
+    | '/updates'
     | '/wallet'
   id:
     | '__root__'
@@ -180,6 +191,7 @@ export interface FileRouteTypes {
     | '/referral'
     | '/slots'
     | '/support'
+    | '/updates'
     | '/wallet'
   fileRoutesById: FileRoutesById
 }
@@ -196,6 +208,7 @@ export interface RootRouteChildren {
   ReferralRoute: typeof ReferralRoute
   SlotsRoute: typeof SlotsRoute
   SupportRoute: typeof SupportRoute
+  UpdatesRoute: typeof UpdatesRoute
   WalletRoute: typeof WalletRoute
 }
 
@@ -206,6 +219,13 @@ declare module '@tanstack/react-router' {
       path: '/wallet'
       fullPath: '/wallet'
       preLoaderRoute: typeof WalletRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/updates': {
+      id: '/updates'
+      path: '/updates'
+      fullPath: '/updates'
+      preLoaderRoute: typeof UpdatesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/support': {
@@ -308,6 +328,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReferralRoute: ReferralRoute,
   SlotsRoute: SlotsRoute,
   SupportRoute: SupportRoute,
+  UpdatesRoute: UpdatesRoute,
   WalletRoute: WalletRoute,
 }
 export const routeTree = rootRouteImport
