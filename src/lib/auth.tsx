@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 type Profile = {
@@ -31,44 +30,63 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  const loadProfile = async (uid: string) => {
-    const { data } = await supabase
-      .from("profiles")
-      .select("id,name,mobile,balance,bonus_balance,referral_code,kyc_status,status")
-      .eq("id", uid)
-      .maybeSingle();
-    if (data?.status === "banned") {
-      toast.error("আপনার অ্যাকাউন্ট ব্যান করা হয়েছে। সাহায্যের জন্য সাপোর্টে যোগাযোগ করুন।");
-      await supabase.auth.signOut();
-      setProfile(null);
-      setIsAdmin(false);
-      return;
-    }
-    setProfile(data as Profile | null);
-    const { data: roles } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", uid);
-    setIsAdmin(!!roles?.some((r) => r.role === "admin"));
-  };
+  const [supabase, setSupabase] = useState<any>(null);
 
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
-      setSession(s);
-      if (s?.user) {
-        setTimeout(() => loadProfile(s.user.id), 0);
-      } else {
-        setProfile(null);
-        setIsAdmin(false);
+    let unsub: (() => void) | undefined;
+    const init = async () => {
+      try {
+        const { supabase: sb } = await import("@/integrations/supabase/client");
+        setSupabase(sb);
+
+        const loadProfileLocal = async (uid: string) => {
+          try {
+            const { data } = await sb
+              .from("profiles")
+              .select("id,name,mobile,balance,bonus_balance,referral_code,kyc_status,status")
+              .eq("id", uid)
+              .maybeSingle();
+            if (data?.status === "banned") {
+              toast.error("আপনার অ্যাকাউন্ট ব্যান করা হয়েছে। সাহায্যের জন্য সাপোর্টে যোগাযোগ করুন।");
+              await sb.auth.signOut();
+              setProfile(null);
+              setIsAdmin(false);
+              return;
+            }
+            setProfile(data as Profile | null);
+            const { data: roles } = await sb
+              .from("user_roles")
+              .select("role")
+              .eq("user_id", uid);
+            setIsAdmin(!!roles?.some((r) => r.role === "admin"));
+          } catch (err) {
+            console.error("Failed to load profile:", err);
+            setProfile(null);
+            setIsAdmin(false);
+          }
+        };
+
+        const { data: sub } = sb.auth.onAuthStateChange((_event: any, s: any) => {
+          setSession(s);
+          if (s?.user) {
+            setTimeout(() => loadProfileLocal(s.user.id), 0);
+          } else {
+            setProfile(null);
+            setIsAdmin(false);
+          }
+        });
+        unsub = () => sub.subscription.unsubscribe();
+        const { data } = await sb.auth.getSession();
+        setSession(data.session);
+        if (data.session?.user) await loadProfileLocal(data.session.user.id);
+      } catch (err) {
+        console.warn("Supabase initialization failed:", err);
+      } finally {
+        setLoading(false);
       }
-    });
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      if (data.session?.user) loadProfile(data.session.user.id);
-      setLoading(false);
-    });
-    return () => sub.subscription.unsubscribe();
+    };
+    init();
+    return () => unsub?.();
   }, []);
 
   return (
@@ -79,9 +97,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         profile,
         isAdmin,
         loading,
-        refresh: async () => session?.user && loadProfile(session.user.id),
+        refresh: async () => {
+          if (!supabase || !session?.user) return;
+          try {
+            const { data } = await supabase
+              .from("profiles")
+              .select("id,name,mobile,balance,bonus_balance,referral_code,kyc_status,status")
+              .eq("id", session.user.id)
+              .maybeSingle();
+            setProfile(data as Profile | null);
+          } catch (err) {
+            console.error("Failed to refresh profile:", err);
+          }
+        },
         signOut: async () => {
-          await supabase.auth.signOut();
+          if (supabase) await supabase.auth.signOut();
         },
       }}
     >
