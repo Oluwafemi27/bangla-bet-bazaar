@@ -73,6 +73,36 @@ export type Database = {
         }
         Relationships: []
       }
+      banners: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string
+          is_active: boolean
+          link_url: string | null
+          sort_order: number
+          title_bn: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url: string
+          is_active?: boolean
+          link_url?: string | null
+          sort_order?: number
+          title_bn?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          link_url?: string | null
+          sort_order?: number
+          title_bn?: string | null
+        }
+        Relationships: []
+      }
       bets: {
         Row: {
           amount: number
@@ -125,6 +155,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      feature_updates: {
+        Row: {
+          body_bn: string
+          created_at: string
+          id: string
+          image_url: string | null
+          is_published: boolean
+          title_bn: string
+        }
+        Insert: {
+          body_bn: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_published?: boolean
+          title_bn: string
+        }
+        Update: {
+          body_bn?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          is_published?: boolean
+          title_bn?: string
+        }
+        Relationships: []
       }
       games: {
         Row: {
