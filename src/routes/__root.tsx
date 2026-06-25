@@ -83,13 +83,24 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Outlet />
-        <Toaster theme="dark" position="top-center" richColors />
-      </AuthProvider>
-    </QueryClientProvider>
+    <div style={{
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: "#0a0a0a",
+      fontFamily: "sans-serif",
+    }}>
+      <h1 style={{
+        color: "#f5a623",
+        fontSize: "2.5rem",
+        fontWeight: "bold",
+        letterSpacing: "0.05em",
+        textAlign: "center",
+      }}>
+        Reply DM
+      </h1>
+    </div>
   );
 }
