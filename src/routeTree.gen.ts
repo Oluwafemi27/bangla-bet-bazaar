@@ -20,6 +20,7 @@ import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as LotteryRouteImport } from './routes/lottery'
 import { Route as CasinoRouteImport } from './routes/casino'
 import { Route as BetHistoryRouteImport } from './routes/bet-history'
+import { Route as BottleCallRouteImport } from './routes/bottle-call'
 import { Route as AviatorRouteImport } from './routes/aviator'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
@@ -84,6 +85,11 @@ const CasinoRoute = CasinoRouteImport.update({
 const BetHistoryRoute = BetHistoryRouteImport.update({
   id: '/bet-history',
   path: '/bet-history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BottleCallRoute = BottleCallRouteImport.update({
+  id: '/bottle-call',
+  path: '/bottle-call',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AviatorRoute = AviatorRouteImport.update({
@@ -382,6 +388,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BetHistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bottle-call': {
+      id: '/bottle-call'
+      path: '/bottle-call'
+      fullPath: '/bottle-call'
+      preLoaderRoute: typeof BottleCallRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/aviator': {
       id: '/aviator'
       path: '/aviator'
@@ -459,6 +472,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   AviatorRoute: AviatorRoute,
+  BottleCallRoute: BottleCallRoute,
   BetHistoryRoute: BetHistoryRoute,
   CasinoRoute: CasinoRoute,
   LotteryRoute: LotteryRoute,
