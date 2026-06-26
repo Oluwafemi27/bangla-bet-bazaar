@@ -21,7 +21,7 @@ const categories = [
   { to: "/aviator", label: "অ্যাভিয়েটর", desc: "ক্র্যাশ গেম", Icon: Plane, accent: "from-emerald-500/20 to-teal-600/10" },
   { to: "/slots", label: "স্লট মেশিন", desc: "জ্যাকপট ও মেগাউইন", Icon: Dice5, accent: "from-violet-500/20 to-indigo-600/10" },
   { to: "/lottery", label: "লটারি", desc: "নম্বর গেমস", Icon: Ticket, accent: "from-cyan-500/20 to-sky-600/10" },
-  { to: "/bottle-call", label: "বোতল কল", desc: "স্পিন করুন • হেডস অর টেইলস", Icon: Circle, accent: "from-orange-500/20 to-red-600/10" },
+  { to: "/bottle-call", label: "কয়েন ফ্লিপ", desc: "হেডস অর টেইলস • কয়েন ফ্লিপ", Icon: Circle, accent: "from-orange-500/20 to-red-600/10" },
   { to: "/promotions", label: "প্রমোশন", desc: "বোনাস ক্লেইম করুন", Icon: Gift, accent: "from-yellow-500/20 to-amber-600/10" },
 ] as const;
 
