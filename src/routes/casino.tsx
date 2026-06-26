@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { AppShell } from "@/components/AppShell";
+import { Trophy, Flame, PawPrint, Handshake, XCircle, Sparkles, Bomb, Circle } from "lucide-react";
 
 export const Route = createFileRoute("/casino")({
   head: () => ({ meta: [{ title: "ক্যাসিনো — বাজি কিং" }] }),
@@ -128,6 +129,80 @@ const GLOBAL_CSS = `
   transform:translateX(-100%); transition:transform .4s;
 }
 .casino-btn:hover::after { transform:translateX(100%); }
+
+/* ── Glassmorphism ───────────────────────────────────────────────────── */
+.glass {
+  background: linear-gradient(155deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.02) 100%);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(255,255,255,.09);
+  position: relative;
+}
+.glass::before {
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background: linear-gradient(135deg, rgba(255,255,255,.14) 0%, transparent 35%);
+  mix-blend-mode: overlay;
+}
+.glass-edge {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(0,0,0,.3);
+}
+
+/* ── Neumorphism (soft dual-shadow on the dark surface) ─────────────── */
+.neu {
+  background: linear-gradient(145deg, #0d1326, #060914);
+  box-shadow:
+    8px 8px 18px rgba(0,0,0,.55),
+    -6px -6px 16px rgba(255,255,255,.025),
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+.neu-inset {
+  background: linear-gradient(145deg, #060914, #0d1326);
+  box-shadow:
+    inset 5px 5px 12px rgba(0,0,0,.6),
+    inset -4px -4px 10px rgba(255,255,255,.02);
+}
+.neu-btn {
+  transition: box-shadow .18s, transform .12s;
+}
+.neu-btn:active {
+  box-shadow: inset 4px 4px 10px rgba(0,0,0,.55), inset -3px -3px 8px rgba(255,255,255,.02);
+  transform: scale(.98);
+}
+
+/* ── Futuristic glow accents ─────────────────────────────────────────── */
+@keyframes borderFlow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.holo-border {
+  position: relative; border-radius: inherit;
+}
+.holo-border::after {
+  content:''; position:absolute; inset:-1.5px; border-radius:inherit; z-index:-1;
+  background: linear-gradient(90deg,#f0c040,#00e5ff,#8b5cf6,#f0c040);
+  background-size: 300% 100%;
+  animation: borderFlow 6s linear infinite;
+  opacity: .55; filter: blur(2px);
+}
+@keyframes neonFlicker {
+  0%,100% { filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 14px currentColor); }
+  50%     { filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 9px currentColor); }
+}
+.icon-glow { animation: neonFlicker 2.4s ease-in-out infinite; }
+
+@keyframes scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+.scan-sheen { position:absolute; inset:0; overflow:hidden; border-radius:inherit; pointer-events:none; }
+.scan-sheen::before {
+  content:''; position:absolute; left:0; right:0; height:40%;
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,.06), transparent);
+  animation: scanline 3.5s linear infinite;
+}
+
+.game-card { transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s; }
+.game-card:hover { transform: translateY(-3px) scale(1.012); }
 `;
 
 function InjectStyles() {
@@ -221,13 +296,15 @@ function ChipRow({ bet, onChip, balance }: { bet: number; onChip: (v: number) =>
             key={v}
             onClick={() => onChip(v)}
             disabled={balance < v}
-            className="casino-btn"
+            className="casino-btn neu-btn"
             style={{
-              width: 52, height: 52, borderRadius: "50%",
-              background: `radial-gradient(circle at 35% 35%,${c1},${c2})`,
-              border: `3px solid ${c1}88`,
+              width: 54, height: 54, borderRadius: "50%",
+              background: `radial-gradient(circle at 32% 28%,${c1},${c2} 70%)`,
+              border: `3px dashed rgba(255,255,255,.5)`,
+              outline: `3px solid ${c1}99`,
+              outlineOffset: "-7px",
               color: "#fff", fontWeight: 800, fontSize: 12,
-              boxShadow: `0 4px 14px ${c2}88, inset 0 1px 0 rgba(255,255,255,.25)`,
+              boxShadow: `0 6px 16px ${c2}99, 0 0 18px ${c1}55, inset 0 2px 2px rgba(255,255,255,.35), inset 0 -3px 6px rgba(0,0,0,.35)`,
               cursor: balance < v ? "not-allowed" : "pointer",
               opacity: balance < v ? .4 : 1,
               display: "flex", alignItems: "center", justifyContent: "center",
@@ -255,24 +332,141 @@ function StatPill({ label, value, color = "#f0c040" }: { label: string; value: s
 
 function TableFelt({ children, accent = "#1a5c2a" }: { children: React.ReactNode; accent?: string }) {
   return (
-    <div style={{
-      borderRadius: 20, padding: "24px 20px", position: "relative", overflow: "hidden",
+    <div className="glass-edge" style={{
+      borderRadius: 22, padding: "25px 21px", position: "relative", overflow: "hidden",
       background: `radial-gradient(ellipse at 50% 30%,${accent} 0%,#0a1a10 100%)`,
-      border: "2px solid rgba(255,255,255,.06)",
-      boxShadow: `0 0 60px ${accent}44, inset 0 0 40px rgba(0,0,0,.4)`,
+      border: "1px solid rgba(255,255,255,.1)",
+      boxShadow: `0 0 70px ${accent}55, 0 20px 50px rgba(0,0,0,.5), inset 0 0 40px rgba(0,0,0,.4)`,
     }}>
       {/* Felt texture lines */}
       <div style={{
-        position: "absolute", inset: 0, borderRadius: 20, pointerEvents: "none",
+        position: "absolute", inset: 0, borderRadius: 22, pointerEvents: "none",
         backgroundImage: "repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.012) 3px,rgba(255,255,255,.012) 4px)",
         animation: "tableShine 4s ease infinite",
+      }} />
+      {/* Glass sheen across the top */}
+      <div style={{
+        position: "absolute", inset: 0, borderRadius: 22, pointerEvents: "none",
+        background: "linear-gradient(180deg, rgba(255,255,255,.08) 0%, transparent 30%)",
       }} />
       {/* Inner oval */}
       <div style={{
         position: "absolute", inset: "10%", borderRadius: "50%",
-        border: "1px solid rgba(255,255,255,.06)", pointerEvents: "none",
+        border: "1px solid rgba(255,255,255,.08)", pointerEvents: "none",
       }} />
       <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   GAME LOGOS (SVG — replace emoji icons)
+══════════════════════════════════════════════════════════════════════════ */
+function BlackjackLogo({ color = "#22c55e", size = 34 }: { color?: string; size?: number }) {
+  const id = "bj-grad";
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#fff" />
+          <stop offset="100%" stopColor={color} />
+        </linearGradient>
+      </defs>
+      <g transform="translate(24,24) rotate(-12)">
+        <rect x="-15" y="-19" width="22" height="30" rx="4" fill="#0a0e1a" stroke={color} strokeWidth="1.4" opacity=".55" />
+      </g>
+      <g transform="translate(24,24) rotate(8)">
+        <rect x="-7" y="-15" width="22" height="30" rx="4" fill="url(#bj-grad)" stroke={color} strokeWidth="1.6" />
+        <text x="-1.5" y="-3" textAnchor="middle" fontSize="13" fontWeight="800" fill="#0a0e1a" fontFamily="monospace">21</text>
+        <path d="M3 4 L5.5 9 L11 9.6 L7 13.2 L8.2 18.6 L3 15.8 L-2.2 18.6 L-1 13.2 L-5 9.6 L0.5 9 Z" fill={color} opacity=".85" />
+      </g>
+    </svg>
+  );
+}
+
+function RouletteLogo({ color = "#ef4444", size = 34 }: { color?: string; size?: number }) {
+  const segs = 12;
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
+      <circle cx="24" cy="24" r="21" fill="#0a0e1a" stroke={color} strokeWidth="1.5" opacity=".9" />
+      {Array.from({ length: segs }).map((_, i) => {
+        const a1 = (i / segs) * 360;
+        const a2 = ((i + 1) / segs) * 360;
+        const mid = (a1 + a2) / 2;
+        const r1 = 8, r2 = 19;
+        const toXY = (a: number, r: number) => [24 + r * Math.cos((a * Math.PI) / 180), 24 + r * Math.sin((a * Math.PI) / 180)];
+        const [x1, y1] = toXY(a1, r1), [x2, y2] = toXY(a1, r2), [x3, y3] = toXY(a2, r2), [x4, y4] = toXY(a2, r1);
+        const fill = i % 2 === 0 ? color : "#fff8d6";
+        return <path key={i} d={`M${x1},${y1} L${x2},${y2} A${r2},${r2} 0 0,1 ${x3},${y3} L${x4},${y4} Z`} fill={fill} opacity={i % 2 === 0 ? 0.9 : 0.18} />;
+      })}
+      <circle cx="24" cy="24" r="7.5" fill="url(#rl-hub)" stroke={color} strokeWidth="1.4" />
+      <defs>
+        <radialGradient id="rl-hub" cx="35%" cy="30%" r="70%">
+          <stop offset="0%" stopColor="#fff8d6" />
+          <stop offset="100%" stopColor={color} />
+        </radialGradient>
+      </defs>
+      <circle cx="24" cy="6.5" r="2.1" fill="#fff" opacity=".95" />
+    </svg>
+  );
+}
+
+function DragonTigerLogo({ color = "#8b5cf6", size = 34 }: { color?: string; size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
+      <defs>
+        <clipPath id="dt-clip"><circle cx="24" cy="24" r="20" /></clipPath>
+        <linearGradient id="dt-d" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#ff8a8a" /><stop offset="100%" stopColor="#ef4444" />
+        </linearGradient>
+        <linearGradient id="dt-t" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0%" stopColor="#7dd3fc" /><stop offset="100%" stopColor="#3b82f6" />
+        </linearGradient>
+      </defs>
+      <circle cx="24" cy="24" r="20.5" fill="#0a0e1a" stroke={color} strokeWidth="1.4" />
+      <g clipPath="url(#dt-clip)">
+        <path d="M4 4 L44 4 L4 44 Z" fill="url(#dt-d)" opacity=".9" />
+        <path d="M44 44 L4 44 L44 4 Z" fill="url(#dt-t)" opacity=".9" />
+        <path d="M4 4 L44 44" stroke="#fff" strokeWidth="1.2" opacity=".5" />
+      </g>
+      <text x="13" y="20" textAnchor="middle" fontSize="11" fontWeight="800" fill="#fff" fontFamily="serif">D</text>
+      <text x="35" y="32" textAnchor="middle" fontSize="11" fontWeight="800" fill="#fff" fontFamily="serif">T</text>
+      <circle cx="24" cy="24" r="3.2" fill="#f0c040" stroke="#fff" strokeWidth=".6" />
+    </svg>
+  );
+}
+
+function GameLogo({ id, color, size }: { id: GameId; color?: string; size?: number }) {
+  if (id === "blackjack") return <BlackjackLogo color={color} size={size} />;
+  if (id === "roulette") return <RouletteLogo color={color} size={size} />;
+  if (id === "dragon_tiger") return <DragonTigerLogo color={color} size={size} />;
+  return null;
+}
+
+/* ── Result badge (replaces emoji in outcome messages) ───────────────── */
+type MsgTone = "win" | "lose" | "tie" | "bust" | "info";
+type Msg = { tone: MsgTone; text: string } | null;
+
+const TONE_STYLE: Record<MsgTone, { color: string; bg: string; border: string; Icon: any }> = {
+  win:  { color: "#00ff88", bg: "rgba(0,255,136,.12)",  border: "rgba(0,255,136,.35)",  Icon: Trophy },
+  lose: { color: "#ff6b6b", bg: "rgba(255,60,60,.09)",  border: "rgba(255,60,60,.25)",  Icon: XCircle },
+  tie:  { color: "#f0c040", bg: "rgba(240,192,64,.1)",  border: "rgba(240,192,64,.3)",  Icon: Handshake },
+  bust: { color: "#ff6b6b", bg: "rgba(255,60,60,.1)",   border: "rgba(255,60,60,.3)",   Icon: Bomb },
+  info: { color: "#f0c040", bg: "rgba(240,192,64,.08)", border: "rgba(240,192,64,.2)",  Icon: Sparkles },
+};
+
+function ResultBadge({ msg }: { msg: Msg }) {
+  if (!msg) return null;
+  const { color, bg, border, Icon } = TONE_STYLE[msg.tone];
+  return (
+    <div className="result-pop glass" style={{
+      display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+      textAlign: "center", padding: "10px 20px", borderRadius: 12, marginBottom: 12,
+      background: bg, border: `1px solid ${border}`, color, fontSize: 14, fontWeight: 700,
+      boxShadow: `0 0 22px ${border}, inset 0 1px 0 rgba(255,255,255,.06)`,
+    }}>
+      <Icon size={16} className="icon-glow" style={{ color, flexShrink: 0 }} />
+      <span>{msg.text}</span>
     </div>
   );
 }
@@ -288,7 +482,7 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
   const [dealer, setDealer] = useState<Card[]>([]);
   const [bet, setBet] = useState(0);
   const [phase, setPhase] = useState<BJPhase>("bet");
-  const [msg, setMsg] = useState("");
+  const [msg, setMsg] = useState<Msg>(null);
   const [floats, setFloats] = useState<{ id: number; text: string }[]>([]);
   const floatId = useRef(0);
 
@@ -299,7 +493,7 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
   };
 
   const deal = () => {
-    if (bet === 0) { setMsg("আগে বাজি ধরুন!"); return; }
+    if (bet === 0) { setMsg({ tone: "info", text: "আগে বাজি ধরুন!" }); return; }
     const d = makeDeck();
     const p = [d[0], d[2]];
     const de = [d[1], d[3]];
@@ -307,7 +501,7 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
     setPlayer(p);
     setDealer(de);
     setPhase("play");
-    setMsg("");
+    setMsg(null);
     if (bjTotal(p) === 21) finish(p, de, d.slice(4), true);
   };
 
@@ -324,21 +518,21 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
     if (natural && pt === 21) {
       const win = Math.floor(bet * 2.5);
       setBalance(balance - bet + win);
-      setMsg("🃏 ব্ল্যাকজ্যাক! ১.৫x জয়!");
+      setMsg({ tone: "win", text: "ব্ল্যাকজ্যাক! ১.৫x জয়!" });
       addFloat(`+৳${win}`);
     } else if (pt > 21) {
-      setMsg("💥 বাস্ট! হেরে গেলেন।");
+      setMsg({ tone: "bust", text: "বাস্ট! হেরে গেলেন।" });
     } else if (dt > 21 || pt > dt) {
       const win = bet * 2;
       setBalance(balance - bet + win);
-      setMsg("🏆 আপনি জিতেছেন!");
+      setMsg({ tone: "win", text: "আপনি জিতেছেন!" });
       addFloat(`+৳${win}`);
     } else if (pt === dt) {
       setBalance(balance);
-      setMsg("🤝 টাই! বাজি ফেরত।");
+      setMsg({ tone: "tie", text: "টাই! বাজি ফেরত।" });
       addFloat("টাই");
     } else {
-      setMsg("😞 ডিলার জিতেছে।");
+      setMsg({ tone: "lose", text: "ডিলার জিতেছে।" });
     }
   }, [bet, balance, setBalance]);
 
@@ -364,7 +558,7 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
 
   const reset = () => {
     setPlayer([]); setDealer([]); setBet(0);
-    setPhase("bet"); setMsg(""); setDeck([]);
+    setPhase("bet"); setMsg(null); setDeck([]);
   };
 
   const addChip = (v: number) => {
@@ -406,18 +600,7 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
         </div>
 
         {/* Message */}
-        {msg && (
-          <div className="result-pop" style={{
-            textAlign: "center", padding: "10px 20px", borderRadius: 10, marginBottom: 12,
-            background: won ? "rgba(0,255,100,.12)" : phase === "done" ? "rgba(255,60,60,.1)" : "rgba(240,192,64,.08)",
-            border: `1px solid ${won ? "rgba(0,255,100,.3)" : phase === "done" ? "rgba(255,60,60,.25)" : "rgba(240,192,64,.2)"}`,
-            color: won ? "#00ff88" : phase === "done" ? "#ff6b6b" : "#f0c040",
-            fontSize: 14, fontWeight: 700,
-            boxShadow: won ? "0 0 20px rgba(0,255,100,.15)" : "none",
-          }}>
-            {msg}
-          </div>
-        )}
+        <ResultBadge msg={msg} />
 
         {/* Player hand */}
         <div style={{ marginBottom: 20 }}>
@@ -536,23 +719,23 @@ function Roulette({ balance, setBalance }: { balance: number; setBalance: (n: nu
   const [result, setResult] = useState<number | null>(null);
   const [selectedBet, setSelectedBet] = useState<RouletteBet | null>(null);
   const [betAmt, setBetAmt] = useState(0);
-  const [msg, setMsg] = useState("");
+  const [msg, setMsg] = useState<Msg>(null);
   const [wheelAngle, setWheelAngle] = useState(0);
   const wheelRef = useRef<HTMLDivElement>(null);
   const ballRef = useRef<HTMLDivElement>(null);
 
   const addChip = (v: number) => {
-    if (!selectedBet) { setMsg("আগে একটি বেট বাছুন!"); return; }
+    if (!selectedBet) { setMsg({ tone: "info", text: "আগে একটি বেট বাছুন!" }); return; }
     if (balance < v) return;
     setBetAmt((b) => b + v);
     setBalance(balance - v);
   };
 
   const spin = () => {
-    if (!selectedBet || betAmt === 0) { setMsg("বেট করুন তারপর স্পিন করুন!"); return; }
+    if (!selectedBet || betAmt === 0) { setMsg({ tone: "info", text: "বেট করুন তারপর স্পিন করুন!" }); return; }
     setSpinning(true);
     setResult(null);
-    setMsg("বল ঘুরছে...");
+    setMsg({ tone: "info", text: "বল ঘুরছে..." });
 
     const resultNum = ROULETTE_NUMS[Math.floor(Math.random() * ROULETTE_NUMS.length)];
     const idx = ROULETTE_NUMS.indexOf(resultNum);
@@ -576,9 +759,9 @@ function Roulette({ balance, setBalance }: { balance: number; setBalance: (n: nu
       if (won) {
         const winAmt = betAmt * selectedBet.payout;
         setBalance(balance - betAmt + winAmt);
-        setMsg(`🎉 ${resultNum} — জয়! +৳${winAmt}`);
+        setMsg({ tone: "win", text: `${resultNum} — জয়! +৳${winAmt}` });
       } else {
-        setMsg(`${resultNum === 0 ? "🟢 শূন্য" : RED_NUMS.includes(resultNum) ? "🔴" : "⚫"} ${resultNum} — হার।`);
+        setMsg({ tone: "lose", text: `${resultNum} — হার।` });
       }
       setBetAmt(0);
     }, 4200);
@@ -652,16 +835,7 @@ function Roulette({ balance, setBalance }: { balance: number; setBalance: (n: nu
       </div>
 
       {/* Message */}
-      {msg && (
-        <div className="result-pop" style={{
-          textAlign: "center", padding: "9px 18px", borderRadius: 10, marginBottom: 14,
-          background: msg.includes("জয়") ? "rgba(0,255,100,.1)" : "rgba(255,60,60,.08)",
-          border: `1px solid ${msg.includes("জয়") ? "rgba(0,255,100,.3)" : "rgba(255,60,60,.2)"}`,
-          color: msg.includes("জয়") ? "#00ff88" : "#ff8888", fontSize: 13, fontWeight: 700,
-        }}>
-          {msg}
-        </div>
-      )}
+      <div style={{ marginBottom: 14 }}><ResultBadge msg={msg} /></div>
 
       {/* Bet grid */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 6, marginBottom: 14 }}>
@@ -714,24 +888,24 @@ function DragonTiger({ balance, setBalance }: { balance: number; setBalance: (n:
   const [tiger, setTiger] = useState<Card | null>(null);
   const [bet, setBet] = useState<DTBet>(null);
   const [betAmt, setBetAmt] = useState(0);
-  const [msg, setMsg] = useState("");
+  const [msg, setMsg] = useState<Msg>(null);
   const [revealStep, setRevealStep] = useState(0);
 
   const addChip = (v: number) => {
-    if (!bet) { setMsg("আগে Dragon, Tiger বা Tie বেছে নিন!"); return; }
+    if (!bet) { setMsg({ tone: "info", text: "আগে Dragon, Tiger বা Tie বেছে নিন!" }); return; }
     if (balance < v) return;
     setBetAmt((b) => b + v);
     setBalance(balance - v);
   };
 
   const deal = () => {
-    if (!bet || betAmt === 0) { setMsg("বাজি ধরুন!"); return; }
+    if (!bet || betAmt === 0) { setMsg({ tone: "info", text: "বাজি ধরুন!" }); return; }
     const deck = makeDeck();
     setDragon(deck[0]);
     setTiger(deck[1]);
     setPhase("reveal");
     setRevealStep(0);
-    setMsg("");
+    setMsg(null);
 
     setTimeout(() => setRevealStep(1), 600);
     setTimeout(() => {
@@ -739,26 +913,27 @@ function DragonTiger({ balance, setBalance }: { balance: number; setBalance: (n:
       setPhase("done");
       const dv = deck[0].num, tv = deck[1].num;
       let outcome: DTBet = dv > tv ? "dragon" : tv > dv ? "tiger" : "tie";
+      const outcomeName = outcome === "dragon" ? "ড্রাগন" : outcome === "tiger" ? "টাইগার" : "টাই";
       if (outcome === bet) {
         const payout = bet === "tie" ? 8 : 2;
         const win = betAmt * payout;
         setBalance(balance - betAmt + win);
-        setMsg(`🏆 ${bet === "dragon" ? "ড্রাগন" : bet === "tiger" ? "টাইগার" : "টাই"} জিতেছে! +৳${win}`);
+        setMsg({ tone: "win", text: `${outcomeName} জিতেছে! +৳${win}` });
       } else {
-        setMsg(`${outcome === "dragon" ? "🐉 ড্রাগন" : outcome === "tiger" ? "🐯 টাইগার" : "🤝 টাই"} — আপনি হেরেছেন।`);
+        setMsg({ tone: outcome === "tie" ? "tie" : "lose", text: `${outcomeName} — আপনি হেরেছেন।` });
       }
     }, 1400);
   };
 
   const reset = () => {
     setDragon(null); setTiger(null); setBet(null);
-    setBetAmt(0); setMsg(""); setPhase("bet"); setRevealStep(0);
+    setBetAmt(0); setMsg(null); setPhase("bet"); setRevealStep(0);
   };
 
   const sides = [
-    { id: "dragon" as DTBet, label: "🐉 ড্রাগন", color: "#ef4444", glow: "rgba(239,68,68,.4)", payout: "2x" },
-    { id: "tie"    as DTBet, label: "🤝 টাই",    color: "#22c55e", glow: "rgba(34,197,94,.4)",  payout: "8x" },
-    { id: "tiger"  as DTBet, label: "🐯 টাইগার", color: "#3b82f6", glow: "rgba(59,130,246,.4)", payout: "2x" },
+    { id: "dragon" as DTBet, label: "ড্রাগন",  Icon: Flame,    color: "#ef4444", glow: "rgba(239,68,68,.4)", payout: "2x" },
+    { id: "tie"    as DTBet, label: "টাই",     Icon: Handshake,color: "#22c55e", glow: "rgba(34,197,94,.4)",  payout: "8x" },
+    { id: "tiger"  as DTBet, label: "টাইগার", Icon: PawPrint, color: "#3b82f6", glow: "rgba(59,130,246,.4)", payout: "2x" },
   ];
 
   return (
@@ -776,7 +951,10 @@ function DragonTiger({ balance, setBalance }: { balance: number; setBalance: (n:
               boxShadow: bet === s.id ? `0 0 20px ${s.glow}` : "none",
               transition: "all .2s",
             }}>
-              <div>{s.label}</div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}>
+                <s.Icon size={14} className={bet === s.id ? "icon-glow" : ""} style={{ color: bet === s.id ? s.color : "#888" }} />
+                {s.label}
+              </div>
               <div style={{ fontSize: 10, marginTop: 3, opacity: .6 }}>{s.payout}</div>
             </button>
           ))}
@@ -809,16 +987,7 @@ function DragonTiger({ balance, setBalance }: { balance: number; setBalance: (n:
       </TableFelt>
 
       {/* Message */}
-      {msg && (
-        <div className="result-pop" style={{
-          textAlign: "center", padding: "10px 20px", borderRadius: 10, marginTop: 14,
-          background: msg.includes("জয়") || msg.includes("জিতেছে!") ? "rgba(0,255,100,.1)" : "rgba(255,60,60,.08)",
-          border: `1px solid ${msg.includes("জিতেছে!") ? "rgba(0,255,100,.3)" : "rgba(255,60,60,.2)"}`,
-          color: msg.includes("জিতেছে!") ? "#00ff88" : "#ff8888", fontSize: 14, fontWeight: 700,
-        }}>
-          {msg}
-        </div>
-      )}
+      <div style={{ marginTop: 14 }}><ResultBadge msg={msg} /></div>
 
       {/* Controls */}
       <div style={{ marginTop: 16 }}>
@@ -866,27 +1035,27 @@ const GAMES = [
     id: "blackjack" as GameId,
     name: "ব্ল্যাকজ্যাক",
     nameEn: "Blackjack",
-    icon: "🃏",
     desc: "২১ এ পৌঁছান, ডিলারকে হারান",
     accent: "#22c55e",
+    accentRgb: "34,197,94",
     tag: "ক্লাসিক",
   },
   {
     id: "roulette" as GameId,
     name: "রুলেট",
     nameEn: "Roulette",
-    icon: "🎡",
     desc: "চাকা ঘুরান, ভাগ্য পরীক্ষা করুন",
     accent: "#ef4444",
+    accentRgb: "239,68,68",
     tag: "জনপ্রিয়",
   },
   {
     id: "dragon_tiger" as GameId,
     name: "ড্রাগন টাইগার",
     nameEn: "Dragon Tiger",
-    icon: "⚔️",
     desc: "ড্রাগন না টাইগার — কে জিতবে?",
     accent: "#8b5cf6",
+    accentRgb: "139,92,246",
     tag: "লাইভ",
   },
 ];
@@ -903,24 +1072,27 @@ function Casino() {
   return (
     <AppShell>
       <InjectStyles />
-      <div style={{ maxWidth: 600, margin: "0 auto", padding: "16px 16px 32px" }}>
+      <div style={{
+        maxWidth: 600, margin: "0 auto", padding: "16px 16px 32px",
+        background: "radial-gradient(ellipse at 50% 0%, rgba(139,92,246,.06) 0%, transparent 45%), radial-gradient(ellipse at 100% 100%, rgba(240,192,64,.05) 0%, transparent 50%)",
+      }}>
 
         {/* Balance bar */}
-        <div style={{
+        <div className="glass glass-edge" style={{
           display: "flex", justifyContent: "space-between", alignItems: "center",
-          background: "rgba(0,0,0,.4)", borderRadius: 12, padding: "10px 16px",
-          border: "1px solid rgba(240,192,64,.15)", marginBottom: 20,
-          boxShadow: "0 0 20px rgba(240,192,64,.05)",
+          borderRadius: 16, padding: "12px 18px", marginBottom: 20,
+          boxShadow: "0 0 30px rgba(240,192,64,.07), 0 8px 24px rgba(0,0,0,.35)",
         }}>
           <div>
-            <div style={{ fontSize: 10, color: "rgba(255,255,255,.35)", letterSpacing: 2 }}>ব্যালেন্স</div>
+            <div style={{ fontSize: 10, color: "rgba(255,255,255,.4)", letterSpacing: 2 }}>ব্যালেন্স</div>
             <div className="shimmer-text" style={{ fontSize: 22, fontWeight: 800 }}>৳{balance.toLocaleString()}</div>
           </div>
           {activeGame !== "lobby" && (
-            <button onClick={() => setActiveGame("lobby")} style={{
-              background: "rgba(240,192,64,.08)", border: "1px solid rgba(240,192,64,.25)",
-              borderRadius: 8, padding: "7px 14px", color: "#f0c040",
-              fontSize: 12, fontWeight: 600, cursor: "pointer",
+            <button onClick={() => setActiveGame("lobby")} className="neu-btn" style={{
+              background: "rgba(240,192,64,.08)", border: "1px solid rgba(240,192,64,.3)",
+              borderRadius: 10, padding: "8px 16px", color: "#f0c040",
+              fontSize: 12, fontWeight: 700, cursor: "pointer",
+              boxShadow: "0 0 14px rgba(240,192,64,.15)",
             }}>
               ← লবি
             </button>
@@ -938,47 +1110,45 @@ function Casino() {
                 আপনার গেম বেছে নিন
               </p>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {GAMES.map((g) => (
-                <button key={g.id} className="casino-btn" onClick={() => setActiveGame(g.id)} style={{
-                  textAlign: "left", borderRadius: 16, padding: 0, border: "none",
+                <button key={g.id} className="casino-btn game-card" onClick={() => setActiveGame(g.id)} style={{
+                  textAlign: "left", borderRadius: 18, padding: 0, border: "none",
                   cursor: "pointer", overflow: "hidden", display: "block", width: "100%",
                   background: "transparent",
                 }}>
-                  <div style={{
-                    background: `linear-gradient(135deg,rgba(0,0,0,.6) 0%,rgba(${
-                      g.accent === "#22c55e" ? "34,197,94" : g.accent === "#ef4444" ? "239,68,68" : "139,92,246"
-                    },.12) 100%)`,
-                    border: `1px solid ${g.accent}33`,
-                    borderRadius: 16, padding: "18px 20px",
-                    boxShadow: `0 0 30px ${g.accent}11, inset 0 1px 0 rgba(255,255,255,.04)`,
-                    transition: "all .2s",
+                  <div className="glass glass-edge" style={{
+                    background: `linear-gradient(135deg, rgba(${g.accentRgb},.10) 0%, rgba(255,255,255,.03) 60%, rgba(${g.accentRgb},.05) 100%)`,
+                    border: `1px solid ${g.accent}3a`,
+                    borderRadius: 18, padding: "18px 20px", position: "relative",
+                    boxShadow: `0 0 36px ${g.accent}1c, 0 10px 26px rgba(0,0,0,.4)`,
                     display: "flex", alignItems: "center", gap: 16,
                   }}>
-                    <div style={{
-                      width: 64, height: 64, borderRadius: 14, flexShrink: 0,
-                      background: `radial-gradient(circle at 35% 35%,${g.accent}44,${g.accent}11)`,
-                      border: `1.5px solid ${g.accent}44`,
+                    <div className="scan-sheen" />
+                    <div className="neu" style={{
+                      width: 64, height: 64, borderRadius: 16, flexShrink: 0,
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: 30,
-                      boxShadow: `0 0 20px ${g.accent}33`,
+                      border: `1.5px solid ${g.accent}55`,
+                      boxShadow: `0 0 22px ${g.accent}3d, inset 0 1px 0 rgba(255,255,255,.05)`,
+                      position: "relative", zIndex: 1,
                     }}>
-                      {g.icon}
+                      <GameLogo id={g.id} color={g.accent} size={36} />
                     </div>
-                    <div style={{ flex: 1 }}>
+                    <div style={{ flex: 1, position: "relative", zIndex: 1 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
                         <span style={{ fontSize: 18, fontWeight: 800, color: "#fff" }}>{g.name}</span>
                         <span style={{
                           fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 20,
                           background: `${g.accent}22`, color: g.accent,
-                          border: `1px solid ${g.accent}44`, letterSpacing: 1,
+                          border: `1px solid ${g.accent}55`, letterSpacing: 1,
+                          boxShadow: `0 0 10px ${g.accent}33`,
                         }}>
                           {g.tag}
                         </span>
                       </div>
-                      <div style={{ fontSize: 12, color: "rgba(255,255,255,.4)" }}>{g.desc}</div>
+                      <div style={{ fontSize: 12, color: "rgba(255,255,255,.45)" }}>{g.desc}</div>
                     </div>
-                    <div style={{ color: g.accent, fontSize: 20, opacity: .7 }}>›</div>
+                    <div style={{ color: g.accent, fontSize: 20, opacity: .8, position: "relative", zIndex: 1 }}>›</div>
                   </div>
                 </button>
               ))}
@@ -991,7 +1161,13 @@ function Casino() {
           <>
             {/* Game header */}
             <div style={{ textAlign: "center", marginBottom: 20 }}>
-              <div style={{ fontSize: 28, marginBottom: 4 }}>{game.icon}</div>
+              <div className="neu holo-border" style={{
+                width: 64, height: 64, borderRadius: 18, margin: "0 auto 10px",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                boxShadow: `0 0 26px ${game.accent}40`,
+              }}>
+                <GameLogo id={game.id} color={game.accent} size={38} />
+              </div>
               <h2 className="casino-font" style={{
                 fontSize: 22, margin: "0 0 2px",
                 background: `linear-gradient(135deg,${game.accent},#fff)`,
