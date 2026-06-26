@@ -778,16 +778,54 @@ function Roulette({ balance, setBalance }: { balance: number; setBalance: (n: nu
           border: "4px solid rgba(240,192,64,.5)",
           boxShadow: "0 0 40px rgba(240,192,64,.2), 0 0 80px rgba(0,0,0,.6), inset 0 0 20px rgba(0,0,0,.5)",
         }}>
-          {/* Wheel segments */}
+          {/* Wheel segments with numbers */}
           <div ref={wheelRef} style={{
             width: "100%", height: "100%", borderRadius: "50%",
-            background: `conic-gradient(${ROULETTE_NUMS.map((n, i) => {
-              const c = n === 0 ? "#16a34a" : RED_NUMS.includes(n) ? "#dc2626" : "#111827";
-              const a = 360 / ROULETTE_NUMS.length;
-              return `${c} ${i * a}deg ${(i + 1) * a}deg`;
-            }).join(", ")})`,
             position: "absolute", inset: 0,
-          }} />
+          }}>
+            <svg viewBox="0 0 220 220" width="220" height="220" style={{ position: "absolute", inset: 0 }}>
+              {ROULETTE_NUMS.map((n, i) => {
+                const total = ROULETTE_NUMS.length;
+                const seg = (2 * Math.PI) / total;
+                const startAngle = i * seg - Math.PI / 2;
+                const endAngle = (i + 1) * seg - Math.PI / 2;
+                const cx = 110, cy = 110, r = 108;
+                const x1 = cx + r * Math.cos(startAngle);
+                const y1 = cy + r * Math.sin(startAngle);
+                const x2 = cx + r * Math.cos(endAngle);
+                const y2 = cy + r * Math.sin(endAngle);
+                const midAngle = (startAngle + endAngle) / 2;
+                const labelR = 80;
+                const lx = cx + labelR * Math.cos(midAngle);
+                const ly = cy + labelR * Math.sin(midAngle);
+                const color = n === 0 ? "#16a34a" : RED_NUMS.includes(n) ? "#dc2626" : "#111827";
+                const labelDeg = (midAngle * 180) / Math.PI + 90;
+                return (
+                  <g key={i}>
+                    <path
+                      d={`M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2} Z`}
+                      fill={color}
+                      stroke="rgba(240,192,64,0.3)"
+                      strokeWidth="0.5"
+                    />
+                    <text
+                      x={lx}
+                      y={ly}
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      fill="white"
+                      fontSize={total > 20 ? "7" : "9"}
+                      fontWeight="bold"
+                      transform={`rotate(${labelDeg}, ${lx}, ${ly})`}
+                      style={{ userSelect: "none", pointerEvents: "none" }}
+                    >
+                      {n}
+                    </text>
+                  </g>
+                );
+              })}
+            </svg>
+          </div>
           {/* Center hub */}
           <div style={{
             position: "absolute", top: "50%", left: "50%",
