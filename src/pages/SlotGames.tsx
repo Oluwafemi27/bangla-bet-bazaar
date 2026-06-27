@@ -250,11 +250,7 @@ function Reel({
         borderRadius: "12px",
         border: `1px solid rgba(255,255,255,0.08)`,
         boxShadow: isSpinning
-          ? `0 0 20px rgba(${accentColor
-              .replace("#", "")
-              .match(/.{2}/g)!
-              .map((h) => parseInt(h, 16))
-              .join(",")},0.4) inset`
+          ? `0 0 20px rgba(${(accentColor.replace("#", "").match(/.{2}/g) ?? ["ff","d7","00"]).map((h) => parseInt(h, 16)).join(",")},0.4) inset`
           : "none",
         transition: "box-shadow 0.3s ease",
         minWidth: "70px",
