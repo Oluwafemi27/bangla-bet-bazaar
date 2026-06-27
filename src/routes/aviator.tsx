@@ -471,7 +471,7 @@ function Aviator() {
         .av-arena {
           position: relative;
           width: 100%;
-          aspect-ratio: 16 / 8;
+          aspect-ratio: 16 / 9;
           border-radius: 20px;
           overflow: hidden;
           border: 1px solid rgba(240,192,64,0.2);
@@ -612,6 +612,9 @@ function Aviator() {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 14px;
+        }
+        @media (max-width: 640px) {
+          .av-arena { aspect-ratio: 4 / 3 !important; }
         }
         @media (max-width: 540px) {
           .av-controls { grid-template-columns: 1fr; }
