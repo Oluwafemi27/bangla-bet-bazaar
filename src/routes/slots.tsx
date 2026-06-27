@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { Dice5 } from "lucide-react";
 import { useState } from "react";
@@ -9,7 +9,6 @@ export const Route = createFileRoute("/slots")({
 });
 
 const slotGames = [
-  // JILI games from screenshots
   { name: "Crazy777", tag: "hot", emoji: "7️⃣", multiplier: "3333x", provider: "JILI" },
   { name: "Super Ace", tag: "hot", emoji: "🃏", multiplier: "1500x", provider: "JILI" },
   { name: "Crazy Hunter", tag: "hot", emoji: "🎯", multiplier: "2000x", provider: "JILI" },
@@ -18,7 +17,6 @@ const slotGames = [
   { name: "Lucky Coming", tag: "hot", emoji: "🐘", multiplier: "1111x", provider: "JILI" },
   { name: "Pharaoh Treasure", tag: "hot", emoji: "🏛️", multiplier: "5000x", provider: "JILI" },
   { name: "Boxing King", tag: "hot", emoji: "🥊", multiplier: "2000x", provider: "JILI" },
-  // Original games
   { name: "মেগা ফরচুন", tag: "megawin", emoji: "💰", multiplier: "500x", provider: "Popular" },
   { name: "বুক অফ ডেড", tag: "popular", emoji: "📕", multiplier: "250x", provider: "Popular" },
   { name: "স্টারবার্স্ট", tag: "popular", emoji: "⭐", multiplier: "200x", provider: "Popular" },
@@ -35,6 +33,7 @@ const slotGames = [
 
 function Slots() {
   const [filter, setFilter] = useState<"all" | "hot" | "popular" | "new" | "megawin">("all");
+  const navigate = useNavigate();
   const filtered = filter === "all" ? slotGames : slotGames.filter((s) => s.tag === filter);
   const filters = [
     { id: "all", label: "সব" },
@@ -61,7 +60,8 @@ function Slots() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {filtered.map((g, i) => (
-            <button key={i} className="rounded-xl border border-border/60 bg-card-gradient p-3 hover:gold-border hover:glow-gold text-left relative overflow-hidden">
+            <button key={i} onClick={() => navigate({ to: "/slots/play" })}
+              className="rounded-xl border border-border/60 bg-card-gradient p-3 hover:gold-border hover:glow-gold text-left relative overflow-hidden">
               {g.tag === "hot" && (
                 <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full z-10">
                   🔥
