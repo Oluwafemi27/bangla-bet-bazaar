@@ -23,7 +23,7 @@ function SvgPlane({ crashed, multiplier }: { crashed: boolean; multiplier: numbe
   const tilt = crashed ? 75 : Math.min(35, (multiplier - 1) * 4);
   return (
     <svg
-      width="56" height="28"
+      width="72" height="36"
       viewBox="0 0 56 28"
       style={{
         transform: `rotate(-${tilt}deg)`,
@@ -113,8 +113,8 @@ function AviatorChart({
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    const W = canvas.width;
-    const H = canvas.height;
+    const W = canvas.offsetWidth || canvas.width / (window.devicePixelRatio || 1);
+    const H = canvas.offsetHeight || canvas.height / (window.devicePixelRatio || 1);
 
     ctx.clearRect(0, 0, W, H);
 
@@ -275,31 +275,33 @@ function AviatorChart({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ro = new ResizeObserver(() => {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+    function resize() {
+      if (!canvas) return;
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.offsetWidth;
+      const h = canvas.offsetHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
       const ctx = canvas.getContext("2d");
-      if (ctx) ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-    });
+      if (ctx) { ctx.setTransform(1,0,0,1,0,0); ctx.scale(dpr, dpr); }
+    }
+    const ro = new ResizeObserver(resize);
     ro.observe(canvas);
-    // initial size
-    canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-    canvas.height = canvas.offsetHeight * window.devicePixelRatio;
-    const ctx = canvas.getContext("2d");
-    if (ctx) ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    resize();
     return () => ro.disconnect();
   }, []);
 
-  // Plane overlay position
+  // Plane overlay position - use logical (CSS) dimensions
   const [planePct, setPlanePct] = useState({ left: "8%", bottom: "8%" });
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !planePos.current.x) return;
     const W = canvas.offsetWidth;
     const H = canvas.offsetHeight;
+    if (W === 0 || H === 0) return;
     const pct = {
-      left: `${(planePos.current.x / W) * 100}%`,
-      bottom: `${((H - planePos.current.y) / H) * 100}%`,
+      left: `${Math.min(95, (planePos.current.x / W) * 100)}%`,
+      bottom: `${Math.min(90, Math.max(2, ((H - planePos.current.y) / H) * 100))}%`,
     };
     setPlanePct(pct);
   });
@@ -614,7 +616,8 @@ function Aviator() {
           gap: 14px;
         }
         @media (max-width: 640px) {
-          .av-arena { aspect-ratio: 4 / 3 !important; }
+          .av-arena { aspect-ratio: 4 / 3 !important; min-height: 260px; }
+          .av-root { padding: 10px 12px; }
         }
         @media (max-width: 540px) {
           .av-controls { grid-template-columns: 1fr; }
