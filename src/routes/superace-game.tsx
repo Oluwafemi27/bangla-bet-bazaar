@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { SuperAceSlot } from "@/components/games/SuperAceSlot";
 
 function SuperAceGame() {
   const navigate = useNavigate();
@@ -20,13 +21,7 @@ function SuperAceGame() {
       >
         ← স্লট
       </button>
-      <iframe
-        src="https://6a405a4970ec745387fe1dbe.discover.playabl.ai?hideBadge=true"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none" }}
-        allow="fullscreen; autoplay"
-        allowFullScreen
-        title="Super Ace"
-      />
+      <SuperAceSlot />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Crazy777Slot } from "@/components/games/Crazy777Slot";
 
 function Crazy777Game() {
   const navigate = useNavigate();
@@ -20,13 +21,7 @@ function Crazy777Game() {
       >
         ← স্লট
       </button>
-      <iframe
-        src="https://6a4053335eec8bf09eaacab2.discover.playabl.ai?hideBadge=true"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none" }}
-        allow="fullscreen; autoplay"
-        allowFullScreen
-        title="Crazy 777"
-      />
+      <Crazy777Slot />
     </div>
   );
 }
