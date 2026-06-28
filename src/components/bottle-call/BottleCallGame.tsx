@@ -23,7 +23,15 @@ export function BottleCallGame() {
   const callStartRef = useRef(0);
   const callRafRef = useRef<number | null>(null);
   const angleRef = useRef(angle);
+  const mountedRef = useRef(true);
+  
   useEffect(() => { angleRef.current = angle; }, [angle]);
+  
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     try {
@@ -53,6 +61,7 @@ export function BottleCallGame() {
 
   const startCalling = useCallback(() => {
     try {
+      if (!mountedRef.current) return;
       setPhase("calling");
       setPick(null);
       setLastResult(null);
@@ -60,10 +69,12 @@ export function BottleCallGame() {
       callStartRef.current = Date.now();
       const tick = () => {
         try {
+          if (!mountedRef.current) return;
           const elapsed = Date.now() - callStartRef.current;
           const left = Math.max(0, CALL_WINDOW_MS - elapsed);
           setCallMsLeft(left);
           if (left <= 0) {
+            if (!mountedRef.current) return;
             setMisses((m) => Math.min(MAX_MISSES, m + 1));
             setStreak(0);
             setPhase("idle");
@@ -72,13 +83,13 @@ export function BottleCallGame() {
           callRafRef.current = requestAnimationFrame(tick);
         } catch (error) {
           console.error("Bottle call game RAF error:", error);
-          setPhase("idle");
+          if (mountedRef.current) setPhase("idle");
         }
       };
       callRafRef.current = requestAnimationFrame(tick);
     } catch (error) {
       console.error("Bottle call game start calling error:", error);
-      setPhase("idle");
+      if (mountedRef.current) setPhase("idle");
     }
   }, []);
 
@@ -94,6 +105,7 @@ export function BottleCallGame() {
     if (!pick) return;
     try {
       stopCallTimer();
+      if (!mountedRef.current) return;
       setPhase("spinning");
       const result: Side = Math.random() < 0.5 ? "heads" : "tails";
       const spins = 5 + Math.floor(Math.random() * 4);
@@ -103,8 +115,9 @@ export function BottleCallGame() {
       const target = currentAngle + spins * 360 + ((finalDeg - ((currentAngle % 360) + 360) % 360) + 360) % 360 + jitter;
       setAngle(target);
 
-      window.setTimeout(() => {
+      const timeoutId = window.setTimeout(() => {
         try {
+          if (!mountedRef.current) return;
           const win = result === pick;
           const gained = win ? 10 + streak * 2 : 0;
           setLastResult({ win, side: result, gained });
@@ -118,17 +131,22 @@ export function BottleCallGame() {
           setPhase("result");
         } catch (error) {
           console.error("Bottle call game result error:", error);
-          setPhase("idle");
+          if (mountedRef.current) setPhase("idle");
         }
       }, SPIN_MS + 60);
+      
+      return () => {
+        clearTimeout(timeoutId);
+      };
     } catch (error) {
       console.error("Bottle call game spin error:", error);
-      setPhase("idle");
+      if (mountedRef.current) setPhase("idle");
     }
   }, [pick, streak, stopCallTimer]);
 
   const nextRound = () => {
     try {
+      if (!mountedRef.current) return;
       if (misses >= MAX_MISSES) {
         setScore(0);
         setStreak(0);
@@ -143,7 +161,7 @@ export function BottleCallGame() {
       startCalling();
     } catch (error) {
       console.error("Bottle call game next round error:", error);
-      setPhase("idle");
+      if (mountedRef.current) setPhase("idle");
     }
   };
 
