@@ -40,8 +40,15 @@ export function BottleCallGame() {
   }, [score, best]);
 
   const stopCallTimer = useCallback(() => {
-    if (callRafRef.current) cancelAnimationFrame(callRafRef.current);
-    callRafRef.current = null;
+    try {
+      if (callRafRef.current) {
+        cancelAnimationFrame(callRafRef.current);
+        callRafRef.current = null;
+      }
+    } catch (error) {
+      console.error("Error stopping call timer:", error);
+      callRafRef.current = null;
+    }
   }, []);
 
   const startCalling = useCallback(() => {
@@ -75,7 +82,13 @@ export function BottleCallGame() {
     }
   }, []);
 
-  useEffect(() => () => stopCallTimer(), [stopCallTimer]);
+  useEffect(() => () => {
+    try {
+      stopCallTimer();
+    } catch (error) {
+      console.error("Cleanup error:", error);
+    }
+  }, [stopCallTimer]);
 
   const spin = useCallback(() => {
     if (!pick) return;
