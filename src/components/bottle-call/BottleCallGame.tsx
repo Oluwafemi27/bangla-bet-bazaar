@@ -45,68 +45,93 @@ export function BottleCallGame() {
   }, []);
 
   const startCalling = useCallback(() => {
-    setPhase("calling");
-    setPick(null);
-    setLastResult(null);
-    setCallMsLeft(CALL_WINDOW_MS);
-    callStartRef.current = Date.now();
-    const tick = () => {
-      const elapsed = Date.now() - callStartRef.current;
-      const left = Math.max(0, CALL_WINDOW_MS - elapsed);
-      setCallMsLeft(left);
-      if (left <= 0) {
-        setMisses((m) => Math.min(MAX_MISSES, m + 1));
-        setStreak(0);
-        setPhase("idle");
-        return;
-      }
+    try {
+      setPhase("calling");
+      setPick(null);
+      setLastResult(null);
+      setCallMsLeft(CALL_WINDOW_MS);
+      callStartRef.current = Date.now();
+      const tick = () => {
+        try {
+          const elapsed = Date.now() - callStartRef.current;
+          const left = Math.max(0, CALL_WINDOW_MS - elapsed);
+          setCallMsLeft(left);
+          if (left <= 0) {
+            setMisses((m) => Math.min(MAX_MISSES, m + 1));
+            setStreak(0);
+            setPhase("idle");
+            return;
+          }
+          callRafRef.current = requestAnimationFrame(tick);
+        } catch (error) {
+          console.error("Bottle call game RAF error:", error);
+          setPhase("idle");
+        }
+      };
       callRafRef.current = requestAnimationFrame(tick);
-    };
-    callRafRef.current = requestAnimationFrame(tick);
+    } catch (error) {
+      console.error("Bottle call game start calling error:", error);
+      setPhase("idle");
+    }
   }, []);
 
   useEffect(() => () => stopCallTimer(), [stopCallTimer]);
 
   const spin = useCallback(() => {
     if (!pick) return;
-    stopCallTimer();
-    setPhase("spinning");
-    const result: Side = Math.random() < 0.5 ? "heads" : "tails";
-    const spins = 5 + Math.floor(Math.random() * 4);
-    const finalDeg = result === "heads" ? 270 : 90;
-    const currentAngle = angleRef.current;
-    const jitter = Math.random() * 30 - 15;
-    const target = currentAngle + spins * 360 + ((finalDeg - ((currentAngle % 360) + 360) % 360) + 360) % 360 + jitter;
-    setAngle(target);
+    try {
+      stopCallTimer();
+      setPhase("spinning");
+      const result: Side = Math.random() < 0.5 ? "heads" : "tails";
+      const spins = 5 + Math.floor(Math.random() * 4);
+      const finalDeg = result === "heads" ? 270 : 90;
+      const currentAngle = angleRef.current;
+      const jitter = Math.random() * 30 - 15;
+      const target = currentAngle + spins * 360 + ((finalDeg - ((currentAngle % 360) + 360) % 360) + 360) % 360 + jitter;
+      setAngle(target);
 
-    window.setTimeout(() => {
-      const win = result === pick;
-      const gained = win ? 10 + streak * 2 : 0;
-      setLastResult({ win, side: result, gained });
-      if (win) {
-        setScore((s) => s + gained);
-        setStreak((s) => s + 1);
-      } else {
-        setMisses((m) => Math.min(MAX_MISSES, m + 1));
-        setStreak(0);
-      }
-      setPhase("result");
-    }, SPIN_MS + 60);
+      window.setTimeout(() => {
+        try {
+          const win = result === pick;
+          const gained = win ? 10 + streak * 2 : 0;
+          setLastResult({ win, side: result, gained });
+          if (win) {
+            setScore((s) => s + gained);
+            setStreak((s) => s + 1);
+          } else {
+            setMisses((m) => Math.min(MAX_MISSES, m + 1));
+            setStreak(0);
+          }
+          setPhase("result");
+        } catch (error) {
+          console.error("Bottle call game result error:", error);
+          setPhase("idle");
+        }
+      }, SPIN_MS + 60);
+    } catch (error) {
+      console.error("Bottle call game spin error:", error);
+      setPhase("idle");
+    }
   }, [pick, streak, stopCallTimer]);
 
   const nextRound = () => {
-    if (misses >= MAX_MISSES) {
-      setScore(0);
-      setStreak(0);
-      setMisses(0);
-      setLastResult(null);
+    try {
+      if (misses >= MAX_MISSES) {
+        setScore(0);
+        setStreak(0);
+        setMisses(0);
+        setLastResult(null);
+        setPick(null);
+        setPhase("idle");
+        return;
+      }
       setPick(null);
+      setLastResult(null);
+      startCalling();
+    } catch (error) {
+      console.error("Bottle call game next round error:", error);
       setPhase("idle");
-      return;
     }
-    setPick(null);
-    setLastResult(null);
-    startCalling();
   };
 
   const gameOver = misses >= MAX_MISSES;
