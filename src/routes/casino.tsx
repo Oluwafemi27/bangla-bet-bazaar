@@ -608,13 +608,15 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
 
   const reset = () => {
     setDisableAnimations(true);
-    setPlayer([]); 
-    setDealer([]); 
-    setBet(0);
-    setPhase("bet"); 
-    setMsg(null); 
-    setDeck([]);
-    setTimeout(() => setDisableAnimations(false), 50);
+    setTimeout(() => {
+      setPlayer([]);
+      setDealer([]);
+      setBet(0);
+      setPhase("bet");
+      setMsg(null);
+      setDeck([]);
+      setTimeout(() => setDisableAnimations(false), 50);
+    }, 350);
   };
 
   const addChip = (v: number) => {
