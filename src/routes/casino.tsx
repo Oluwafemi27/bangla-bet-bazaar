@@ -485,6 +485,11 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
   const [msg, setMsg] = useState<Msg>(null);
   const [floats, setFloats] = useState<{ id: number; text: string }[]>([]);
   const floatId = useRef(0);
+  // Refs to avoid stale closures in finish()
+  const balanceRef = useRef(balance);
+  const betRef = useRef(bet);
+  useEffect(() => { balanceRef.current = balance; }, [balance]);
+  useEffect(() => { betRef.current = bet; }, [bet]);
 
   const addFloat = (text: string) => {
     const id = floatId.current++;
@@ -506,6 +511,8 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
   };
 
   const finish = useCallback((p: Card[], de: Card[], remaining: Card[], natural = false) => {
+    const currentBalance = balanceRef.current;
+    const currentBet = betRef.current;
     let dealerHand = [...de];
     let rem = [...remaining];
     while (bjTotal(dealerHand) < 17) {
@@ -516,25 +523,25 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
     setPhase("done");
     const pt = bjTotal(p), dt = bjTotal(dealerHand);
     if (natural && pt === 21) {
-      const win = Math.floor(bet * 2.5);
-      setBalance(balance - bet + win);
+      const win = Math.floor(currentBet * 2.5);
+      setBalance(currentBalance + win); // balance already had bet deducted
       setMsg({ tone: "win", text: "ব্ল্যাকজ্যাক! ১.৫x জয়!" });
       addFloat(`+৳${win}`);
     } else if (pt > 21) {
       setMsg({ tone: "bust", text: "বাস্ট! হেরে গেলেন।" });
     } else if (dt > 21 || pt > dt) {
-      const win = bet * 2;
-      setBalance(balance - bet + win);
+      const win = currentBet * 2;
+      setBalance(currentBalance + win);
       setMsg({ tone: "win", text: "আপনি জিতেছেন!" });
       addFloat(`+৳${win}`);
     } else if (pt === dt) {
-      setBalance(balance);
+      setBalance(currentBalance + currentBet); // refund bet
       setMsg({ tone: "tie", text: "টাই! বাজি ফেরত।" });
       addFloat("টাই");
     } else {
       setMsg({ tone: "lose", text: "ডিলার জিতেছে।" });
     }
-  }, [bet, balance, setBalance]);
+  }, [setBalance]);
 
   const hit = () => {
     const newCard = deck[0];
@@ -550,7 +557,11 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
   const dbl = () => {
     if (balance < bet) return;
     setBalance(balance - bet);
-    setBet(bet * 2);
+    setBet((b) => {
+      const newBet = b * 2;
+      betRef.current = newBet;
+      return newBet;
+    });
     const newCard = deck[0];
     const newPlayer = [...player, newCard];
     finish(newPlayer, dealer, deck.slice(1));

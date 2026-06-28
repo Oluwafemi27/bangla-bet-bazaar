@@ -22,6 +22,8 @@ export function BottleCallGame() {
 
   const callStartRef = useRef(0);
   const callRafRef = useRef<number | null>(null);
+  const angleRef = useRef(angle);
+  useEffect(() => { angleRef.current = angle; }, [angle]);
 
   useEffect(() => {
     try {
@@ -72,8 +74,9 @@ export function BottleCallGame() {
     const result: Side = Math.random() < 0.5 ? "heads" : "tails";
     const spins = 5 + Math.floor(Math.random() * 4);
     const finalDeg = result === "heads" ? 270 : 90;
+    const currentAngle = angleRef.current;
     const jitter = Math.random() * 30 - 15;
-    const target = angle + spins * 360 + ((finalDeg - ((angle % 360) + 360) % 360) + 360) % 360 + jitter;
+    const target = currentAngle + spins * 360 + ((finalDeg - ((currentAngle % 360) + 360) % 360) + 360) % 360 + jitter;
     setAngle(target);
 
     window.setTimeout(() => {
@@ -89,7 +92,7 @@ export function BottleCallGame() {
       }
       setPhase("result");
     }, SPIN_MS + 60);
-  }, [pick, streak, angle, stopCallTimer]);
+  }, [pick, streak, stopCallTimer]);
 
   const nextRound = () => {
     if (misses >= MAX_MISSES) {
