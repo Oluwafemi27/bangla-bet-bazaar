@@ -194,11 +194,12 @@ function CoinFlip() {
     const finalAngle = totalSpins + targetFace;
     const duration = 2400 + Math.random() * 700;
     const startAngle = angleRef.current;
-    const startTime = performance.now();
+    const startTime = Date.now();
 
     function easeOut(t: number) { return 1 - Math.pow(1 - t, 3.5); }
 
-    function tick(now: number) {
+    function tick() {
+      const now = Date.now();
       const t = Math.min((now - startTime) / duration, 1);
       angleRef.current = startAngle + (finalAngle - startAngle) * easeOut(t);
       draw();

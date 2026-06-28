@@ -49,9 +49,9 @@ export function BottleCallGame() {
     setPick(null);
     setLastResult(null);
     setCallMsLeft(CALL_WINDOW_MS);
-    callStartRef.current = performance.now();
+    callStartRef.current = Date.now();
     const tick = () => {
-      const elapsed = performance.now() - callStartRef.current;
+      const elapsed = Date.now() - callStartRef.current;
       const left = Math.max(0, CALL_WINDOW_MS - elapsed);
       setCallMsLeft(left);
       if (left <= 0) {

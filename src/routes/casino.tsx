@@ -734,6 +734,13 @@ function Roulette({ balance, setBalance }: { balance: number; setBalance: (n: nu
   const [wheelAngle, setWheelAngle] = useState(0);
   const wheelRef = useRef<HTMLDivElement>(null);
   const ballRef = useRef<HTMLDivElement>(null);
+  // Refs to capture current values for the 4s setTimeout
+  const balanceRef = useRef(balance);
+  const betAmtRef = useRef(betAmt);
+  const selectedBetRef = useRef(selectedBet);
+  useEffect(() => { balanceRef.current = balance; }, [balance]);
+  useEffect(() => { betAmtRef.current = betAmt; }, [betAmt]);
+  useEffect(() => { selectedBetRef.current = selectedBet; }, [selectedBet]);
 
   const addChip = (v: number) => {
     if (!selectedBet) { setMsg({ tone: "info", text: "আগে একটি বেট বাছুন!" }); return; }
@@ -766,10 +773,13 @@ function Roulette({ balance, setBalance }: { balance: number; setBalance: (n: nu
       setWheelAngle(targetAngle % 360);
       setSpinning(false);
       setResult(resultNum);
-      const won = selectedBet.nums.includes(resultNum);
-      if (won) {
-        const winAmt = betAmt * selectedBet.payout;
-        setBalance(balance - betAmt + winAmt);
+      const currentBalance = balanceRef.current;
+      const currentBet = betAmtRef.current;
+      const currentSelectedBet = selectedBetRef.current;
+      const won = currentSelectedBet?.nums.includes(resultNum);
+      if (won && currentSelectedBet) {
+        const winAmt = currentBet * currentSelectedBet.payout;
+        setBalance(currentBalance + winAmt); // balance already has bet deducted
         setMsg({ tone: "win", text: `${resultNum} — জয়! +৳${winAmt}` });
       } else {
         setMsg({ tone: "lose", text: `${resultNum} — হার।` });
@@ -939,6 +949,13 @@ function DragonTiger({ balance, setBalance }: { balance: number; setBalance: (n:
   const [betAmt, setBetAmt] = useState(0);
   const [msg, setMsg] = useState<Msg>(null);
   const [revealStep, setRevealStep] = useState(0);
+  // Refs for stale closure safety inside setTimeouts
+  const balanceRef = useRef(balance);
+  const betAmtRef = useRef(betAmt);
+  const betRef = useRef(bet);
+  useEffect(() => { balanceRef.current = balance; }, [balance]);
+  useEffect(() => { betAmtRef.current = betAmt; }, [betAmt]);
+  useEffect(() => { betRef.current = bet; }, [bet]);
 
   const addChip = (v: number) => {
     if (!bet) { setMsg({ tone: "info", text: "আগে Dragon, Tiger বা Tie বেছে নিন!" }); return; }
@@ -960,13 +977,16 @@ function DragonTiger({ balance, setBalance }: { balance: number; setBalance: (n:
     setTimeout(() => {
       setRevealStep(2);
       setPhase("done");
+      const currentBalance = balanceRef.current;
+      const currentBetAmt = betAmtRef.current;
+      const currentBet = betRef.current;
       const dv = deck[0].num, tv = deck[1].num;
       let outcome: DTBet = dv > tv ? "dragon" : tv > dv ? "tiger" : "tie";
       const outcomeName = outcome === "dragon" ? "ড্রাগন" : outcome === "tiger" ? "টাইগার" : "টাই";
-      if (outcome === bet) {
-        const payout = bet === "tie" ? 8 : 2;
-        const win = betAmt * payout;
-        setBalance(balance - betAmt + win);
+      if (outcome === currentBet) {
+        const payout = currentBet === "tie" ? 8 : 2;
+        const win = currentBetAmt * payout;
+        setBalance(currentBalance + win); // balance already has bet deducted
         setMsg({ tone: "win", text: `${outcomeName} জিতেছে! +৳${win}` });
       } else {
         setMsg({ tone: outcome === "tie" ? "tie" : "lose", text: `${outcomeName} — আপনি হেরেছেন।` });
