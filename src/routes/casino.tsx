@@ -1,7 +1,35 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, Component, type ReactNode } from "react";
 import { AppShell } from "@/components/AppShell";
 import { Trophy, Flame, PawPrint, Handshake, XCircle, Sparkles, Bomb, Circle } from "lucide-react";
+
+/* ── Game-level error boundary — shows the real JS error instead of blank ── */
+class GameErrorBoundary extends Component<
+  { children: ReactNode; game: string },
+  { error: string | null }
+> {
+  state = { error: null };
+  static getDerivedStateFromError(e: Error) { return { error: e?.message || String(e) }; }
+  render() {
+    if (this.state.error) return (
+      <div style={{ padding: 24, textAlign: "center", color: "#ff6b6b" }}>
+        <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 8 }}>
+          {this.props.game} ক্র্যাশ হয়েছে
+        </div>
+        <div style={{ fontSize: 11, opacity: .7, marginBottom: 16, fontFamily: "monospace", wordBreak: "break-all" }}>
+          {this.state.error}
+        </div>
+        <button onClick={() => this.setState({ error: null })}
+          style={{ padding: "8px 20px", borderRadius: 8, border: "1px solid #ff6b6b",
+            background: "rgba(255,107,107,.1)", color: "#ff6b6b", cursor: "pointer" }}>
+          রিসেট
+        </button>
+      </div>
+    );
+    return this.props.children;
+  }
+}
+
 
 export const Route = createFileRoute("/casino")({
   head: () => ({ meta: [{ title: "ক্যাসিনো — বাজি কিং" }] }),
@@ -1247,9 +1275,9 @@ function Casino() {
               <div style={{ fontSize: 11, color: "rgba(255,255,255,.3)", letterSpacing: 2 }}>{game.nameEn}</div>
             </div>
 
-            {activeGame === "blackjack"   && <Blackjack    balance={balance} setBalance={setBalance} />}
-            {activeGame === "roulette"    && <Roulette     balance={balance} setBalance={setBalance} />}
-            {activeGame === "dragon_tiger"&& <DragonTiger  balance={balance} setBalance={setBalance} />}
+            {activeGame === "blackjack"   && <GameErrorBoundary game="Blackjack"><Blackjack    balance={balance} setBalance={setBalance} /></GameErrorBoundary>}
+            {activeGame === "roulette"    && <GameErrorBoundary game="Roulette"><Roulette     balance={balance} setBalance={setBalance} /></GameErrorBoundary>}
+            {activeGame === "dragon_tiger"&& <GameErrorBoundary game="Dragon Tiger"><DragonTiger  balance={balance} setBalance={setBalance} /></GameErrorBoundary>}
           </>
         )}
       </div>
