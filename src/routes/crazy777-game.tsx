@@ -3,31 +3,28 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 function Crazy777Game() {
   const navigate = useNavigate();
   return (
-    <div style={{ position: "relative", width: "100%", height: "100vh", background: "#000", display: "flex", flexDirection: "column" }}>
-      {/* Back button */}
+    <div style={{ position: "fixed", inset: 0, background: "#000", display: "flex", flexDirection: "column" }}>
       <button
         onClick={() => navigate({ to: "/slots" })}
         style={{
-          position: "fixed", top: 16, left: 16, zIndex: 200,
+          position: "absolute", top: 12, left: 12, zIndex: 200,
           display: "flex", alignItems: "center", gap: 6,
           padding: "8px 16px", borderRadius: 30,
-          border: "1px solid rgba(255,255,255,0.15)",
-          background: "rgba(6,8,17,0.85)",
+          border: "1px solid rgba(255,255,255,0.2)",
+          background: "rgba(6,8,17,0.9)",
           backdropFilter: "blur(16px)",
-          color: "rgba(255,255,255,0.75)", fontSize: 13,
+          color: "rgba(255,255,255,0.85)", fontSize: 13,
           fontWeight: 700, cursor: "pointer",
-          boxShadow: "0 4px 16px rgba(0,0,0,0.4)",
-          transition: "all 0.2s",
+          boxShadow: "0 4px 16px rgba(0,0,0,0.5)",
         }}
-        onMouseEnter={e => (e.currentTarget.style.color = "#fff")}
-        onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.75)")}
       >
         ← স্লট
       </button>
       <iframe
-        src="https://6a4053335eec8bf09eaacab2.discover.playabl.ai"
-        style={{ flex: 1, border: "none", width: "100%", height: "100%" }}
-        allow="fullscreen"
+        src="https://6a4053335eec8bf09eaacab2.discover.playabl.ai?hideBadge=true"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none" }}
+        allow="fullscreen; autoplay"
+        allowFullScreen
         title="Crazy 777"
       />
     </div>
