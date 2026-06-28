@@ -11,7 +11,10 @@ import { Toaster } from "sonner";
 
 import appCss from "../styles.css?url";
 import { reportError } from "../lib/error-reporting";
+import { installDomCrashGuard } from "../lib/dom-crash-guard";
 import { AuthProvider } from "@/lib/auth";
+
+installDomCrashGuard();
 
 function NotFoundComponent() {
   return (
