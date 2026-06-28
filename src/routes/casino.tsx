@@ -64,8 +64,8 @@ function makeDeck(): Card[] {
 }
 
 function bjTotal(cards: Card[]): number {
-  let total = cards.reduce((s, c) => s + c.num, 0);
-  let aces = cards.filter((c) => c.value === "A").length;
+  let total = cards.reduce((s, c) => s + (c?.num || 0), 0);
+  let aces = cards.filter((c) => c?.value === "A").length;
   while (total > 21 && aces > 0) { total -= 10; aces--; }
   return total;
 }
@@ -543,8 +543,9 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
     const currentBet = betRef.current;
     let dealerHand = [...de];
     let rem = [...remaining];
-    while (bjTotal(dealerHand) < 17) {
-      dealerHand = [...dealerHand, rem[0]];
+    while (bjTotal(dealerHand) < 17 && rem.length > 0) {
+      const nextCard = rem[0];
+      if (nextCard) dealerHand = [...dealerHand, nextCard];
       rem = rem.slice(1);
     }
     setDealer(dealerHand);
@@ -572,6 +573,7 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
   }, [setBalance]);
 
   const hit = () => {
+    if (deck.length === 0) { setMsg({ tone: "info", text: "ডেক শেষ, পুনরায় শুরু করুন।" }); return; }
     const newCard = deck[0];
     const newPlayer = [...player, newCard];
     const newDeck = deck.slice(1);
@@ -584,6 +586,7 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
 
   const dbl = () => {
     if (balance < bet) return;
+    if (deck.length === 0) { setMsg({ tone: "info", text: "ডেক শেষ, পুনরায় শুরু করুন।" }); return; }
     setBalance(balance - bet);
     setBet((b) => {
       const newBet = b * 2;
