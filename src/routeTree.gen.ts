@@ -19,13 +19,14 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as LotteryRouteImport } from './routes/lottery'
 import { Route as CasinoRouteImport } from './routes/casino'
-import { Route as BetHistoryRouteImport } from './routes/bet-history'
-import { Route as BottleCallRouteImport } from './routes/bottle-call'
 import { Route as BottleCallGameRouteImport } from './routes/bottle-call-game'
+import { Route as BottleCallRouteImport } from './routes/bottle-call'
+import { Route as BetHistoryRouteImport } from './routes/bet-history'
 import { Route as AviatorRouteImport } from './routes/aviator'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as SlotsPlayRouteImport } from './routes/slots_.play'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminUpdatesRouteImport } from './routes/admin.updates'
 import { Route as AdminTransactionsRouteImport } from './routes/admin.transactions'
@@ -83,9 +84,9 @@ const CasinoRoute = CasinoRouteImport.update({
   path: '/casino',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BetHistoryRoute = BetHistoryRouteImport.update({
-  id: '/bet-history',
-  path: '/bet-history',
+const BottleCallGameRoute = BottleCallGameRouteImport.update({
+  id: '/bottle-call-game',
+  path: '/bottle-call-game',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BottleCallRoute = BottleCallRouteImport.update({
@@ -93,9 +94,9 @@ const BottleCallRoute = BottleCallRouteImport.update({
   path: '/bottle-call',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BottleCallGameRoute = BottleCallGameRouteImport.update({
-  id: '/bottle-call-game',
-  path: '/bottle-call-game',
+const BetHistoryRoute = BetHistoryRouteImport.update({
+  id: '/bet-history',
+  path: '/bet-history',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AviatorRoute = AviatorRouteImport.update({
@@ -116,6 +117,11 @@ const IndexRoute = IndexRouteImport.update({
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SlotsPlayRoute = SlotsPlayRouteImport.update({
+  id: '/slots_/play',
+  path: '/slots/play',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminUsersRoute = AdminUsersRouteImport.update({
@@ -172,6 +178,7 @@ export interface FileRoutesByFullPath {
   '/admin/transactions': typeof AdminTransactionsRoute
   '/admin/updates': typeof AdminUpdatesRoute
   '/admin/users': typeof AdminUsersRoute
+  '/slots/play': typeof SlotsPlayRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -197,6 +204,7 @@ export interface FileRoutesByTo {
   '/admin/transactions': typeof AdminTransactionsRoute
   '/admin/updates': typeof AdminUpdatesRoute
   '/admin/users': typeof AdminUsersRoute
+  '/slots/play': typeof SlotsPlayRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -223,6 +231,7 @@ export interface FileRoutesById {
   '/admin/transactions': typeof AdminTransactionsRoute
   '/admin/updates': typeof AdminUpdatesRoute
   '/admin/users': typeof AdminUsersRoute
+  '/slots_/play': typeof SlotsPlayRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -250,6 +259,7 @@ export interface FileRouteTypes {
     | '/admin/transactions'
     | '/admin/updates'
     | '/admin/users'
+    | '/slots/play'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -275,6 +285,7 @@ export interface FileRouteTypes {
     | '/admin/transactions'
     | '/admin/updates'
     | '/admin/users'
+    | '/slots/play'
     | '/admin'
   id:
     | '__root__'
@@ -300,6 +311,7 @@ export interface FileRouteTypes {
     | '/admin/transactions'
     | '/admin/updates'
     | '/admin/users'
+    | '/slots_/play'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -326,6 +338,7 @@ export interface RootRouteChildren {
   AdminTransactionsRoute: typeof AdminTransactionsRoute
   AdminUpdatesRoute: typeof AdminUpdatesRoute
   AdminUsersRoute: typeof AdminUsersRoute
+  SlotsPlayRoute: typeof SlotsPlayRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -401,11 +414,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CasinoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/bet-history': {
-      id: '/bet-history'
-      path: '/bet-history'
-      fullPath: '/bet-history'
-      preLoaderRoute: typeof BetHistoryRouteImport
+    '/bottle-call-game': {
+      id: '/bottle-call-game'
+      path: '/bottle-call-game'
+      fullPath: '/bottle-call-game'
+      preLoaderRoute: typeof BottleCallGameRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/bottle-call': {
@@ -415,11 +428,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BottleCallRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/bottle-call-game': {
-      id: '/bottle-call-game'
-      path: '/bottle-call-game'
-      fullPath: '/bottle-call-game'
-      preLoaderRoute: typeof BottleCallGameRouteImport
+    '/bet-history': {
+      id: '/bet-history'
+      path: '/bet-history'
+      fullPath: '/bet-history'
+      preLoaderRoute: typeof BetHistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/aviator': {
@@ -448,6 +461,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/slots_/play': {
+      id: '/slots_/play'
+      path: '/slots/play'
+      fullPath: '/slots/play'
+      preLoaderRoute: typeof SlotsPlayRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/users': {
@@ -499,9 +519,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   AviatorRoute: AviatorRoute,
+  BetHistoryRoute: BetHistoryRoute,
   BottleCallRoute: BottleCallRoute,
   BottleCallGameRoute: BottleCallGameRoute,
-  BetHistoryRoute: BetHistoryRoute,
   CasinoRoute: CasinoRoute,
   LotteryRoute: LotteryRoute,
   NotificationsRoute: NotificationsRoute,
@@ -518,6 +538,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminTransactionsRoute: AdminTransactionsRoute,
   AdminUpdatesRoute: AdminUpdatesRoute,
   AdminUsersRoute: AdminUsersRoute,
+  SlotsPlayRoute: SlotsPlayRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 export const routeTree = rootRouteImport

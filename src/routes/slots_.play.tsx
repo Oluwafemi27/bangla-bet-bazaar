@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import SlotGames from "@/pages/SlotGames";
 
-export const Route = createFileRoute("/slots/play")({
+export const Route = createFileRoute("/slots_/play")({
   head: () => ({ meta: [{ title: "স্লট গেম — বাজি কিং" }] }),
   component: SlotGamePage,
 });
