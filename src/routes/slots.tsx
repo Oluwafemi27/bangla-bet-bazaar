@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { Dice5 } from "lucide-react";
 import { useState } from "react";
+import bottleCallThumb from "@/assets/bottle-call-thumb.jpg";
 
 export const Route = createFileRoute("/slots")({
   head: () => ({ meta: [{ title: "স্লট মেশিন — বাজি কিং" }] }),
@@ -499,6 +500,8 @@ interface SlotGame {
   multiplier: string;
   provider: string;
   color: string;
+  route?: string;
+  thumbnail?: string;
 }
 
 const slotGames: SlotGame[] = [
@@ -526,6 +529,7 @@ const slotGames: SlotGame[] = [
   { name: "রুলেট মাস্টার", tag: "popular", logoKey: "roulette",       multiplier: "360x",  provider: "Live",    color: "#ef4444" },
   { name: "ব্যাকারেট কিং",  tag: "popular", logoKey: "baccarat",       multiplier: "190x",  provider: "Live",    color: "#22cc44" },
   { name: "কয়েন ম্যানিয়া", tag: "new",    logoKey: "coinflipslot",   multiplier: "800x",  provider: "New",     color: "#FFD700" },
+  { name: "Bottle Call",  tag: "hot",    logoKey: "",               multiplier: "500x",  provider: "Arcade",  color: "#37fff1", route: "/bottle-call-game", thumbnail: bottleCallThumb },
 ];
 
 const BadgeHot = () => (
@@ -596,7 +600,7 @@ function Slots() {
           {filtered.map((g, i) => (
             <button
               key={i}
-              onClick={() => navigate({ to: "/slots/play" })}
+              onClick={() => navigate({ to: g.route ?? "/slots/play" })}
               className="rounded-xl border border-border/60 bg-card-gradient p-3 hover:gold-border hover:glow-gold text-left relative overflow-hidden group"
             >
               {/* Badge */}
@@ -620,10 +624,18 @@ function Slots() {
                   border: `1px solid ${g.color}33`,
                 }}
               >
-                <div
-                  className="w-14 h-14 group-hover:scale-110 transition-transform duration-200"
-                  dangerouslySetInnerHTML={{ __html: LOGOS[g.logoKey] ?? "" }}
-                />
+                {g.thumbnail ? (
+                  <img
+                    src={g.thumbnail}
+                    alt={g.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
+                  />
+                ) : (
+                  <div
+                    className="w-14 h-14 group-hover:scale-110 transition-transform duration-200"
+                    dangerouslySetInnerHTML={{ __html: LOGOS[g.logoKey] ?? "" }}
+                  />
+                )}
               </div>
 
               <div className="font-display text-sm leading-tight">{g.name}</div>

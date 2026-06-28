@@ -21,6 +21,7 @@ import { Route as LotteryRouteImport } from './routes/lottery'
 import { Route as CasinoRouteImport } from './routes/casino'
 import { Route as BetHistoryRouteImport } from './routes/bet-history'
 import { Route as BottleCallRouteImport } from './routes/bottle-call'
+import { Route as BottleCallGameRouteImport } from './routes/bottle-call-game'
 import { Route as AviatorRouteImport } from './routes/aviator'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
@@ -92,6 +93,11 @@ const BottleCallRoute = BottleCallRouteImport.update({
   path: '/bottle-call',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BottleCallGameRoute = BottleCallGameRouteImport.update({
+  id: '/bottle-call-game',
+  path: '/bottle-call-game',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AviatorRoute = AviatorRouteImport.update({
   id: '/aviator',
   path: '/aviator',
@@ -148,6 +154,8 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/aviator': typeof AviatorRoute
   '/bet-history': typeof BetHistoryRoute
+  '/bottle-call': typeof BottleCallRoute
+  '/bottle-call-game': typeof BottleCallGameRoute
   '/casino': typeof CasinoRoute
   '/lottery': typeof LotteryRoute
   '/notifications': typeof NotificationsRoute
@@ -171,6 +179,8 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/aviator': typeof AviatorRoute
   '/bet-history': typeof BetHistoryRoute
+  '/bottle-call': typeof BottleCallRoute
+  '/bottle-call-game': typeof BottleCallGameRoute
   '/casino': typeof CasinoRoute
   '/lottery': typeof LotteryRoute
   '/notifications': typeof NotificationsRoute
@@ -195,6 +205,8 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/aviator': typeof AviatorRoute
   '/bet-history': typeof BetHistoryRoute
+  '/bottle-call': typeof BottleCallRoute
+  '/bottle-call-game': typeof BottleCallGameRoute
   '/casino': typeof CasinoRoute
   '/lottery': typeof LotteryRoute
   '/notifications': typeof NotificationsRoute
@@ -220,6 +232,8 @@ export interface FileRouteTypes {
     | '/auth'
     | '/aviator'
     | '/bet-history'
+    | '/bottle-call'
+    | '/bottle-call-game'
     | '/casino'
     | '/lottery'
     | '/notifications'
@@ -243,6 +257,8 @@ export interface FileRouteTypes {
     | '/auth'
     | '/aviator'
     | '/bet-history'
+    | '/bottle-call'
+    | '/bottle-call-game'
     | '/casino'
     | '/lottery'
     | '/notifications'
@@ -266,6 +282,8 @@ export interface FileRouteTypes {
     | '/auth'
     | '/aviator'
     | '/bet-history'
+    | '/bottle-call'
+    | '/bottle-call-game'
     | '/casino'
     | '/lottery'
     | '/notifications'
@@ -290,6 +308,8 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   AviatorRoute: typeof AviatorRoute
   BetHistoryRoute: typeof BetHistoryRoute
+  BottleCallRoute: typeof BottleCallRoute
+  BottleCallGameRoute: typeof BottleCallGameRoute
   CasinoRoute: typeof CasinoRoute
   LotteryRoute: typeof LotteryRoute
   NotificationsRoute: typeof NotificationsRoute
@@ -395,6 +415,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BottleCallRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bottle-call-game': {
+      id: '/bottle-call-game'
+      path: '/bottle-call-game'
+      fullPath: '/bottle-call-game'
+      preLoaderRoute: typeof BottleCallGameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/aviator': {
       id: '/aviator'
       path: '/aviator'
@@ -473,6 +500,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   AviatorRoute: AviatorRoute,
   BottleCallRoute: BottleCallRoute,
+  BottleCallGameRoute: BottleCallGameRoute,
   BetHistoryRoute: BetHistoryRoute,
   CasinoRoute: CasinoRoute,
   LotteryRoute: LotteryRoute,
