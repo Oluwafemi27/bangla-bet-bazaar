@@ -211,3 +211,8 @@
 .flash.win { background: radial-gradient(60% 50% at 50% 50%, rgba(55,255,241,0.55), transparent 70%); }
 .flash.lose { background: radial-gradient(60% 50% at 50% 50%, rgba(255,90,110,0.55), transparent 70%); }
 @keyframes flashFade { 0% { opacity: 0; } 20% { opacity: 1; } 100% { opacity: 0; } }
+
+.disable-animations, .disable-animations * {
+  animation: none !important;
+  transition: none !important;
+}

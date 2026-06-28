@@ -150,13 +150,16 @@ export function BottleCallGame() {
       if (!mountedRef.current) return;
       if (misses >= MAX_MISSES) {
         setDisableAnimations(true);
-        setScore(0);
-        setStreak(0);
-        setMisses(0);
-        setLastResult(null);
-        setPick(null);
-        setPhase("idle");
-        setTimeout(() => setDisableAnimations(false), 50);
+        setTimeout(() => {
+          if (!mountedRef.current) return;
+          setScore(0);
+          setStreak(0);
+          setMisses(0);
+          setLastResult(null);
+          setPick(null);
+          setPhase("idle");
+          setTimeout(() => setDisableAnimations(false), 50);
+        }, 300);
         return;
       }
       setPick(null);
