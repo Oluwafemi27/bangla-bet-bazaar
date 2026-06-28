@@ -119,9 +119,15 @@ const GLOBAL_CSS = `
   50%     { opacity:.09; }
 }
 
+/* ── Animation safety during React updates ───────────────────────── */
+.disable-animations, .disable-animations * {
+  animation: none !important;
+  transition: none !important;
+}
+
 .casino-font { font-family:'Cinzel',serif; }
 
-.card-enter { animation: cardDeal .35s cubic-bezier(.34,1.56,.64,1) both; }
+.card-enter { animation: cardDeal .35s cubic-bezier(.34,1.56,.64,1) forwards; }
 
 .chip-active { animation: chipBounce .4s ease infinite; }
 
@@ -132,9 +138,10 @@ const GLOBAL_CSS = `
   background-clip: text;
   color: transparent;
   animation: shimmer 3s linear infinite;
+  will-change: background-position;
 }
 
-.result-pop { animation: resultPop .5s cubic-bezier(.34,1.56,.64,1) both; }
+.result-pop { animation: resultPop .5s cubic-bezier(.34,1.56,.64,1) forwards; }
 
 .glow-pulse { animation: pulse-ring 1.5s ease-out infinite; }
 
@@ -512,6 +519,7 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
   const [phase, setPhase] = useState<BJPhase>("bet");
   const [msg, setMsg] = useState<Msg>(null);
   const [floats, setFloats] = useState<{ id: number; text: string }[]>([]);
+  const [disableAnimations, setDisableAnimations] = useState(false);
   const floatId = useRef(0);
   // Refs to avoid stale closures in finish()
   const balanceRef = useRef(balance);
@@ -599,8 +607,14 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
   };
 
   const reset = () => {
-    setPlayer([]); setDealer([]); setBet(0);
-    setPhase("bet"); setMsg(null); setDeck([]);
+    setDisableAnimations(true);
+    setPlayer([]); 
+    setDealer([]); 
+    setBet(0);
+    setPhase("bet"); 
+    setMsg(null); 
+    setDeck([]);
+    setTimeout(() => setDisableAnimations(false), 50);
   };
 
   const addChip = (v: number) => {
@@ -613,7 +627,7 @@ function Blackjack({ balance, setBalance }: { balance: number; setBalance: (n: n
   const won = phase === "done" && (pt <= 21 && (dt > 21 || pt >= dt));
 
   return (
-    <div style={{ maxWidth: 500, margin: "0 auto" }}>
+    <div style={{ maxWidth: 500, margin: "0 auto" }} className={disableAnimations ? "disable-animations" : ""}>
       <TableFelt accent="#1a5c2a">
         {/* Float wins */}
         <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translateX(-50%)", zIndex: 20 }}>
@@ -763,6 +777,7 @@ function Roulette({ balance, setBalance }: { balance: number; setBalance: (n: nu
   const [betAmt, setBetAmt] = useState(0);
   const [msg, setMsg] = useState<Msg>(null);
   const [wheelAngle, setWheelAngle] = useState(0);
+  const [disableAnimations, setDisableAnimations] = useState(false);
   const wheelRef = useRef<HTMLDivElement>(null);
   const ballRef = useRef<HTMLDivElement>(null);
   // Refs to capture current values for the 4s setTimeout
@@ -822,7 +837,7 @@ function Roulette({ balance, setBalance }: { balance: number; setBalance: (n: nu
   const numColor = (n: number) => n === 0 ? "#16a34a" : RED_NUMS.includes(n) ? "#dc2626" : "#1e1e1e";
 
   return (
-    <div style={{ maxWidth: 500, margin: "0 auto" }}>
+    <div style={{ maxWidth: 500, margin: "0 auto" }} className={disableAnimations ? "disable-animations" : ""}>
       {/* Wheel */}
       <div style={{ display: "flex", justifyContent: "center", marginBottom: 20, position: "relative" }}>
         <div style={{
@@ -980,6 +995,7 @@ function DragonTiger({ balance, setBalance }: { balance: number; setBalance: (n:
   const [betAmt, setBetAmt] = useState(0);
   const [msg, setMsg] = useState<Msg>(null);
   const [revealStep, setRevealStep] = useState(0);
+  const [disableAnimations, setDisableAnimations] = useState(false);
   // Refs for stale closure safety inside setTimeouts
   const balanceRef = useRef(balance);
   const betAmtRef = useRef(betAmt);
@@ -1026,8 +1042,15 @@ function DragonTiger({ balance, setBalance }: { balance: number; setBalance: (n:
   };
 
   const reset = () => {
-    setDragon(null); setTiger(null); setBet(null);
-    setBetAmt(0); setMsg(null); setPhase("bet"); setRevealStep(0);
+    setDisableAnimations(true);
+    setDragon(null); 
+    setTiger(null); 
+    setBet(null);
+    setBetAmt(0); 
+    setMsg(null); 
+    setPhase("bet"); 
+    setRevealStep(0);
+    setTimeout(() => setDisableAnimations(false), 50);
   };
 
   const sides = [
@@ -1037,7 +1060,7 @@ function DragonTiger({ balance, setBalance }: { balance: number; setBalance: (n:
   ];
 
   return (
-    <div style={{ maxWidth: 500, margin: "0 auto" }}>
+    <div style={{ maxWidth: 500, margin: "0 auto" }} className={disableAnimations ? "disable-animations" : ""}>
       <TableFelt accent="#1a1a3e">
         {/* Bet selector */}
         <div style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 20 }}>

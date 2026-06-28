@@ -19,6 +19,7 @@ export function BottleCallGame() {
   const [callMsLeft, setCallMsLeft] = useState(CALL_WINDOW_MS);
   const [angle, setAngle] = useState(-18);
   const [lastResult, setLastResult] = useState<{ win: boolean; side: Side; gained: number } | null>(null);
+  const [disableAnimations, setDisableAnimations] = useState(false);
 
   const callStartRef = useRef(0);
   const callRafRef = useRef<number | null>(null);
@@ -148,12 +149,14 @@ export function BottleCallGame() {
     try {
       if (!mountedRef.current) return;
       if (misses >= MAX_MISSES) {
+        setDisableAnimations(true);
         setScore(0);
         setStreak(0);
         setMisses(0);
         setLastResult(null);
         setPick(null);
         setPhase("idle");
+        setTimeout(() => setDisableAnimations(false), 50);
         return;
       }
       setPick(null);
@@ -177,7 +180,7 @@ export function BottleCallGame() {
   const callPct = phase === "calling" ? 1 - callMsLeft / CALL_WINDOW_MS : 0;
 
   return (
-    <div className="bottle-call">
+    <div className={`bottle-call ${disableAnimations ? "disable-animations" : ""}`}>
       <div className="bc-bg" aria-hidden />
       <div className="vignette" aria-hidden />
 
