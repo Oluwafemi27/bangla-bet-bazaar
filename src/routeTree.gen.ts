@@ -20,6 +20,8 @@ import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as LotteryRouteImport } from './routes/lottery'
 import { Route as CasinoRouteImport } from './routes/casino'
 import { Route as BottleCallGameRouteImport } from './routes/bottle-call-game'
+import { Route as Crazy777GameRouteImport } from './routes/crazy777-game'
+import { Route as SuperAceGameRouteImport } from './routes/superace-game'
 import { Route as BottleCallRouteImport } from './routes/bottle-call'
 import { Route as BetHistoryRouteImport } from './routes/bet-history'
 import { Route as AviatorRouteImport } from './routes/aviator'
@@ -87,6 +89,16 @@ const CasinoRoute = CasinoRouteImport.update({
 const BottleCallGameRoute = BottleCallGameRouteImport.update({
   id: '/bottle-call-game',
   path: '/bottle-call-game',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Crazy777GameRoute = Crazy777GameRouteImport.update({
+  id: '/crazy777-game',
+  path: '/crazy777-game',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SuperAceGameRoute = SuperAceGameRouteImport.update({
+  id: '/superace-game',
+  path: '/superace-game',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BottleCallRoute = BottleCallRouteImport.update({
@@ -162,32 +174,8 @@ export interface FileRoutesByFullPath {
   '/bet-history': typeof BetHistoryRoute
   '/bottle-call': typeof BottleCallRoute
   '/bottle-call-game': typeof BottleCallGameRoute
-  '/casino': typeof CasinoRoute
-  '/lottery': typeof LotteryRoute
-  '/notifications': typeof NotificationsRoute
-  '/profile': typeof ProfileRoute
-  '/promotions': typeof PromotionsRoute
-  '/referral': typeof ReferralRoute
-  '/slots': typeof SlotsRoute
-  '/support': typeof SupportRoute
-  '/updates': typeof UpdatesRoute
-  '/wallet': typeof WalletRoute
-  '/admin/banners': typeof AdminBannersRoute
-  '/admin/broadcast': typeof AdminBroadcastRoute
-  '/admin/messages': typeof AdminMessagesRoute
-  '/admin/transactions': typeof AdminTransactionsRoute
-  '/admin/updates': typeof AdminUpdatesRoute
-  '/admin/users': typeof AdminUsersRoute
-  '/slots/play': typeof SlotsPlayRoute
-  '/admin/': typeof AdminIndexRoute
-}
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
-  '/aviator': typeof AviatorRoute
-  '/bet-history': typeof BetHistoryRoute
-  '/bottle-call': typeof BottleCallRoute
-  '/bottle-call-game': typeof BottleCallGameRoute
+  '/crazy777-game': typeof Crazy777GameRoute
+  '/superace-game': typeof SuperAceGameRoute
   '/casino': typeof CasinoRoute
   '/lottery': typeof LotteryRoute
   '/notifications': typeof NotificationsRoute
@@ -215,6 +203,8 @@ export interface FileRoutesById {
   '/bet-history': typeof BetHistoryRoute
   '/bottle-call': typeof BottleCallRoute
   '/bottle-call-game': typeof BottleCallGameRoute
+  '/crazy777-game': typeof Crazy777GameRoute
+  '/superace-game': typeof SuperAceGameRoute
   '/casino': typeof CasinoRoute
   '/lottery': typeof LotteryRoute
   '/notifications': typeof NotificationsRoute
@@ -243,6 +233,8 @@ export interface FileRouteTypes {
     | '/bet-history'
     | '/bottle-call'
     | '/bottle-call-game'
+    | '/crazy777-game'
+    | '/superace-game'
     | '/casino'
     | '/lottery'
     | '/notifications'
@@ -269,6 +261,8 @@ export interface FileRouteTypes {
     | '/bet-history'
     | '/bottle-call'
     | '/bottle-call-game'
+    | '/crazy777-game'
+    | '/superace-game'
     | '/casino'
     | '/lottery'
     | '/notifications'
@@ -295,6 +289,8 @@ export interface FileRouteTypes {
     | '/bet-history'
     | '/bottle-call'
     | '/bottle-call-game'
+    | '/crazy777-game'
+    | '/superace-game'
     | '/casino'
     | '/lottery'
     | '/notifications'
@@ -322,6 +318,8 @@ export interface RootRouteChildren {
   BetHistoryRoute: typeof BetHistoryRoute
   BottleCallRoute: typeof BottleCallRoute
   BottleCallGameRoute: typeof BottleCallGameRoute
+  Crazy777GameRoute: typeof Crazy777GameRoute
+  SuperAceGameRoute: typeof SuperAceGameRoute
   CasinoRoute: typeof CasinoRoute
   LotteryRoute: typeof LotteryRoute
   NotificationsRoute: typeof NotificationsRoute
@@ -419,6 +417,20 @@ declare module '@tanstack/react-router' {
       path: '/bottle-call-game'
       fullPath: '/bottle-call-game'
       preLoaderRoute: typeof BottleCallGameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/crazy777-game': {
+      id: '/crazy777-game'
+      path: '/crazy777-game'
+      fullPath: '/crazy777-game'
+      preLoaderRoute: typeof Crazy777GameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/superace-game': {
+      id: '/superace-game'
+      path: '/superace-game'
+      fullPath: '/superace-game'
+      preLoaderRoute: typeof SuperAceGameRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/bottle-call': {
@@ -522,6 +534,8 @@ const rootRouteChildren: RootRouteChildren = {
   BetHistoryRoute: BetHistoryRoute,
   BottleCallRoute: BottleCallRoute,
   BottleCallGameRoute: BottleCallGameRoute,
+  Crazy777GameRoute: Crazy777GameRoute,
+  SuperAceGameRoute: SuperAceGameRoute,
   CasinoRoute: CasinoRoute,
   LotteryRoute: LotteryRoute,
   NotificationsRoute: NotificationsRoute,

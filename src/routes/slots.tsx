@@ -3,6 +3,8 @@ import { AppShell } from "@/components/AppShell";
 import { Dice5 } from "lucide-react";
 import { useState } from "react";
 import bottleCallThumb from "@/assets/bottle-call-thumb.jpg";
+import crazy777Thumb from "@/assets/crazy777-thumb.jpg";
+import superAceThumb from "@/assets/superace-thumb.jpg";
 
 export const Route = createFileRoute("/slots")({
   head: () => ({ meta: [{ title: "স্লট মেশিন — বাজি কিং" }] }),
@@ -505,8 +507,8 @@ interface SlotGame {
 }
 
 const slotGames: SlotGame[] = [
-  { name: "Crazy 777",    tag: "hot",      logoKey: "crazy777",       multiplier: "3333x", provider: "JILI",    color: "#ef4444" },
-  { name: "Super Ace",    tag: "hot",      logoKey: "superace",       multiplier: "1500x", provider: "JILI",    color: "#3b82f6" },
+  { name: "Crazy 777",    tag: "hot",      logoKey: "crazy777",       multiplier: "3333x", provider: "JILI",    color: "#ef4444", route: "/crazy777-game", thumbnail: crazy777Thumb },
+  { name: "Super Ace",    tag: "hot",      logoKey: "superace",       multiplier: "1500x", provider: "JILI",    color: "#3b82f6", route: "/superace-game", thumbnail: superAceThumb },
   { name: "Crazy Hunter", tag: "hot",      logoKey: "crazyhunter",    multiplier: "2000x", provider: "JILI",    color: "#f59e0b" },
   { name: "Fortune Gems", tag: "hot",      logoKey: "fortunegems",    multiplier: "375x",  provider: "JILI",    color: "#06b6d4" },
   { name: "Golden Empire",tag: "hot",      logoKey: "goldenempire",   multiplier: "2000x", provider: "JILI",    color: "#f0c040" },
