@@ -20,6 +20,7 @@ import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as LotteryRouteImport } from './routes/lottery'
 import { Route as Crazy777GameRouteImport } from './routes/crazy777-game'
+import { Route as CricketRouteImport } from './routes/cricket'
 import { Route as CasinoRouteImport } from './routes/casino'
 import { Route as BottleCallGameRouteImport } from './routes/bottle-call-game'
 import { Route as BottleCallRouteImport } from './routes/bottle-call'
@@ -89,6 +90,11 @@ const LotteryRoute = LotteryRouteImport.update({
 const Crazy777GameRoute = Crazy777GameRouteImport.update({
   id: '/crazy777-game',
   path: '/crazy777-game',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CricketRoute = CricketRouteImport.update({
+  id: '/cricket',
+  path: '/cricket',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CasinoRoute = CasinoRouteImport.update({
@@ -175,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/bottle-call': typeof BottleCallRoute
   '/bottle-call-game': typeof BottleCallGameRoute
   '/casino': typeof CasinoRoute
+  '/cricket': typeof CricketRoute
   '/crazy777-game': typeof Crazy777GameRoute
   '/lottery': typeof LotteryRoute
   '/notifications': typeof NotificationsRoute
@@ -203,6 +210,7 @@ export interface FileRoutesByTo {
   '/bottle-call': typeof BottleCallRoute
   '/bottle-call-game': typeof BottleCallGameRoute
   '/casino': typeof CasinoRoute
+  '/cricket': typeof CricketRoute
   '/crazy777-game': typeof Crazy777GameRoute
   '/lottery': typeof LotteryRoute
   '/notifications': typeof NotificationsRoute
@@ -232,6 +240,7 @@ export interface FileRoutesById {
   '/bottle-call': typeof BottleCallRoute
   '/bottle-call-game': typeof BottleCallGameRoute
   '/casino': typeof CasinoRoute
+  '/cricket': typeof CricketRoute
   '/crazy777-game': typeof Crazy777GameRoute
   '/lottery': typeof LotteryRoute
   '/notifications': typeof NotificationsRoute
@@ -262,6 +271,7 @@ export interface FileRouteTypes {
     | '/bottle-call'
     | '/bottle-call-game'
     | '/casino'
+    | '/cricket'
     | '/crazy777-game'
     | '/lottery'
     | '/notifications'
@@ -290,6 +300,7 @@ export interface FileRouteTypes {
     | '/bottle-call'
     | '/bottle-call-game'
     | '/casino'
+    | '/cricket'
     | '/crazy777-game'
     | '/lottery'
     | '/notifications'
@@ -318,6 +329,7 @@ export interface FileRouteTypes {
     | '/bottle-call'
     | '/bottle-call-game'
     | '/casino'
+    | '/cricket'
     | '/crazy777-game'
     | '/lottery'
     | '/notifications'
@@ -347,7 +359,7 @@ export interface RootRouteChildren {
   BottleCallRoute: typeof BottleCallRoute
   BottleCallGameRoute: typeof BottleCallGameRoute
   CasinoRoute: typeof CasinoRoute
-  Crazy777GameRoute: typeof Crazy777GameRoute
+  CricketRoute: typeof CricketRoute
   LotteryRoute: typeof LotteryRoute
   NotificationsRoute: typeof NotificationsRoute
   ProfileRoute: typeof ProfileRoute
@@ -452,6 +464,13 @@ declare module '@tanstack/react-router' {
       path: '/casino'
       fullPath: '/casino'
       preLoaderRoute: typeof CasinoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cricket': {
+      id: '/cricket'
+      path: '/cricket'
+      fullPath: '/cricket'
+      preLoaderRoute: typeof CricketRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/bottle-call-game': {
@@ -563,6 +582,7 @@ const rootRouteChildren: RootRouteChildren = {
   BottleCallRoute: BottleCallRoute,
   BottleCallGameRoute: BottleCallGameRoute,
   CasinoRoute: CasinoRoute,
+  CricketRoute: CricketRoute,
   Crazy777GameRoute: Crazy777GameRoute,
   LotteryRoute: LotteryRoute,
   NotificationsRoute: NotificationsRoute,

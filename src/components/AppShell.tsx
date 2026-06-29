@@ -52,6 +52,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="max-w-7xl mx-auto px-4 flex gap-1 overflow-x-auto">
           {[
             { to: "/casino", label: "ক্যাসিনো" },
+            { to: "/cricket", label: "ক্রিকেট" },
             { to: "/aviator", label: "অ্যাভিয়েটর" },
             { to: "/slots", label: "স্লট" },
             { to: "/lottery", label: "লটারি" },

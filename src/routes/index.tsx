@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Dice5, Plane, Spade, Ticket, Gift, Sparkles, Megaphone, Circle } from "lucide-react";
+import { Dice5, Plane, Spade, Ticket, Gift, Sparkles, Megaphone, Circle, Trophy } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { BannerSlideshow } from "@/components/BannerSlideshow";
 import { supabase } from "@/integrations/supabase/client";
@@ -17,6 +17,7 @@ export const Route = createFileRoute("/")({
 });
 
 const categories = [
+  { to: "/cricket", label: "ক্রিকেট বেটিং", desc: "লাইভ অডস • ম্যাচ বেটিং", Icon: Trophy, accent: "from-green-500/20 to-emerald-600/10" },
   { to: "/casino", label: "লাইভ ক্যাসিনো", desc: "ব্যাকারেট • রুলেট • আন্দার বাহার", Icon: Spade, accent: "from-rose-500/20 to-pink-600/10" },
   { to: "/aviator", label: "অ্যাভিয়েটর", desc: "ক্র্যাশ গেম", Icon: Plane, accent: "from-emerald-500/20 to-teal-600/10" },
   { to: "/slots", label: "স্লট মেশিন", desc: "জ্যাকপট ও মেগাউইন", Icon: Dice5, accent: "from-violet-500/20 to-indigo-600/10" },

@@ -218,40 +218,64 @@ export type Database = {
       }
       matches: {
         Row: {
+          away_logo: string | null
+          category: string | null
           created_at: string
+          external_id: string | null
+          home_logo: string | null
           id: string
+          logo_url: string | null
           result: string | null
           score_away: number | null
           score_home: number | null
+          sport: string
+          sport_id: number | null
           start_time: string
           status: string
           team_away: string
           team_home: string
           tournament: string | null
+          updated_at: string | null
         }
         Insert: {
+          away_logo?: string | null
+          category?: string | null
           created_at?: string
+          external_id?: string | null
+          home_logo?: string | null
           id?: string
+          logo_url?: string | null
           result?: string | null
           score_away?: number | null
           score_home?: number | null
+          sport?: string
+          sport_id?: number | null
           start_time: string
           status?: string
           team_away: string
           team_home: string
           tournament?: string | null
+          updated_at?: string | null
         }
         Update: {
+          away_logo?: string | null
+          category?: string | null
           created_at?: string
+          external_id?: string | null
+          home_logo?: string | null
           id?: string
+          logo_url?: string | null
           result?: string | null
           score_away?: number | null
           score_home?: number | null
+          sport?: string
+          sport_id?: number | null
           start_time?: string
           status?: string
           team_away?: string
           team_home?: string
           tournament?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -282,27 +306,33 @@ export type Database = {
       odds_markets: {
         Row: {
           created_at: string
+          external_id: string | null
           id: string
           is_active: boolean
           market_name: string
           match_id: string
           selections: Json
+          updated_at: string | null
         }
         Insert: {
           created_at?: string
+          external_id?: string | null
           id?: string
           is_active?: boolean
           market_name: string
           match_id: string
           selections: Json
+          updated_at?: string | null
         }
         Update: {
           created_at?: string
+          external_id?: string | null
           id?: string
           is_active?: boolean
           market_name?: string
           match_id?: string
           selections?: Json
+          updated_at?: string | null
         }
         Relationships: [
           {
